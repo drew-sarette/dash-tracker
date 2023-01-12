@@ -1,0 +1,41 @@
+:root {
+    --main-bg-color: white;
+    --main-text-color: black;
+    --accent-color: #00ff8c;
+}
+
+body {
+    background-color: var(--main-bg-color);
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    border-radius: none;
+    border: none;
+}
+
+ul {
+    list-style: none;
+}
+
+a:link, a:visited, a:active {
+    color: var(--main-text-color);
+    text-decoration: none;
+}
+/* || NAV */
+nav > ul {
+    display: flex;
+    justify-content: space-between;
+}
+/* || INPUT */
+.food-group-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 5% .5em 5%;
+}
+
+img.food-group {
+    height: 50px;
+}

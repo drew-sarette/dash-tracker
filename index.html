@@ -4,16 +4,32 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <script src="/js/index.js" defer></script>
+    <title>DASH Tracker</title>
   </head>
   <body>
     <header>
-      <h1>dash tracker</h1>
-      <nav>
+      <div class="flex-container">
+        <h1>dash tracker</h1>
+        <button
+          id="menu-button"
+          class="menu-button"
+          aria-controls="primary-navigation"
+          aria-expanded="false"
+        >
+          <span class="visually-hidden">Menu</span>
+          <div class="top-bun"></div>
+          <div class="patty"></div>
+          <div class="bottom-bun"></div>
+        </button>
+      </div>
+      <nav id="primary-navigation">
         <ul>
           <li><a href="track-record.html">track record</a></li>
+          <hr>
           <li><a href="info.html">DASH info</a></li>
+          <hr>
           <li><a href="your-goals.html">your goals</a></li>
         </ul>
       </nav>
@@ -32,7 +48,9 @@
           ><img src="img/bread.png" alt="" class="food-group grains" /><button
             id="more-grains"
             class="food-group grains"
-          ><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          >
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
         <div class="food-group-container vegetables">
           <button id="less-vegetables" class="food-group vegetables">
@@ -45,7 +63,9 @@
             src="img/broccoli.png"
             alt=""
             class="food-group vegetables"
-          /><button id="more-vegetables" class="food-group vegetables"><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          /><button id="more-vegetables" class="food-group vegetables">
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
         <div class="food-group-container fruits">
           <button id="less-fruits" class="food-group fruits">
@@ -57,7 +77,9 @@
           ><img src="img/banana.png" alt="" class="food-group fruits" /><button
             id="more-fruits"
             class="food-group fruits"
-          ><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          >
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
         <div class="food-group-container meat">
           <button id="less-meat" class="food-group meat">
@@ -69,7 +91,9 @@
           ><img src="img/meat.png" alt="" class="food-group meat" /><button
             id="more-meat"
             class="food-group meat"
-          ><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          >
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
         <div class="food-group-container dairy">
           <button id="less-dairy" class="food-group dairy">
@@ -79,7 +103,9 @@
               srcset=""
             /></button
           ><img src="img/cheese.png" alt="" class="food-group dairy" />
-          <button id="more-dairy" class="food-group dairy"><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          <button id="more-dairy" class="food-group dairy">
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
         <div class="food-group-container sweets">
           <button id="less-sweets" class="food-group sweets">
@@ -91,7 +117,9 @@
           ><img src="img/cookie.png" alt="" class="food-group sweets" /><button
             id="more-sweets"
             class="food-group sweets"
-          ><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          >
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
         <div class="food-group-container salt">
           <button id="less-salt" class="food-group salt">
@@ -102,9 +130,14 @@
             />
           </button>
           <img src="img/salt.png" alt="" class="food-group salt" />
-          <button id="more-salt" class="food-group salt"><img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt=""></button>
+          <button id="more-salt" class="food-group salt">
+            <img src="img/add_FILL0_wght400_GRAD0_opsz48.png" alt="" />
+          </button>
         </div>
       </div>
     </main>
+    <footer>
+      <p>Drew Sarette, 2023</p>
+    </footer>
   </body>
 </html>

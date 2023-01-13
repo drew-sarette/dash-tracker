@@ -5,3 +5,6 @@
 <a href="https://www.flaticon.com/free-icons/meat" title="meat icons">Meat icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/cookie" title="cookie icons">Cookie icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/salt" title="salt icons">Salt icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/oil" title="oil icons">Oil icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/peanut" title="peanut icons">Peanut icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/beer" title="beer icons">Beer icons created by Freepik - Flaticon</a>

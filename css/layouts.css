@@ -1,0 +1,81 @@
+/* || MOBILE LAYOUT */
+body {
+    display: grid;
+    grid-template-rows: max-content auto max-content;
+    grid-template-areas:
+      "header"
+      "input"
+      "footer";
+    gap: 1em;
+  }
+  
+  /* || HEADER */
+  header {
+    grid-area: header;
+  }
+  
+  header .flex-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  h1,
+  .menu-button {
+    margin: 8px 0px;
+  }
+  
+  .menu-button > div {
+    background-color: var(--main-text-color);
+    height: 0.4em;
+    width: 2.5em;
+    margin-bottom: 0.25em;
+    border-radius: 2px;
+    transition-property: transform;
+    transition-duration: 0.3s;
+  }
+  
+  .menu-button-opened .top-bun {
+    transform: translateY(0.625em) rotate(45deg);
+  }
+  .menu-button-opened .bottom-bun {
+    transform: translateY(-0.625em) rotate(-45deg);
+  }
+  .menu-button-opened .patty {
+    transform: rotate(45deg);
+    opacity: 0;
+  }
+  
+  nav {
+    max-height: 0;
+    overflow-y: hidden;
+    transition-property: max-height;
+    transition-timing-function: cubic-bezier(0.36, 0.01, 0.71, 1.09);
+    transition-duration: 0.3s;
+  }
+  
+  .nav-expanded {
+    max-height: 100px; /*height cannot transition to fit-content or auto, using max-height works*/
+  }
+  
+  nav > ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  ul > hr {
+    width: 10%;
+  }
+  
+  /* || INPUT */
+  main {
+    grid-area: input;
+  }
+  
+  h2 {
+    margin: 8px 0px;
+  }
+  
+  /* || FOOTER */
+  footer {
+    grid-area: footer;
+    text-align: center;
+  }

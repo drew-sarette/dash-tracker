@@ -16,7 +16,7 @@ headerTemplate.innerHTML = `
             height: 0.4em;
             width: 2.5em;
             margin-bottom: 0.25em;
-            border-radius: 2px;
+            border-radius: var(--border-radius);
             transition-property: transform;
             transition-duration: 0.3s;
         }

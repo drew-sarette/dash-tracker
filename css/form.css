@@ -1,0 +1,33 @@
+@import "/css/base-style.css";
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+}
+
+form {
+    display:flex;
+    flex-direction: column;
+    gap: 1em;
+    border: 3px solid var(--main-text-color);
+    border-radius: var(--border-radius);
+    padding: 1em;
+    max-width: fit-content;
+}
+
+.form-field-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-field-container label {
+    flex-basis: 30%;
+}
+
+.form-field-container input {
+    flex-basis: 2;
+}

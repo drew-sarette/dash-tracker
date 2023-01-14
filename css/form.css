@@ -18,6 +18,11 @@ form {
     max-width: fit-content;
 }
 
+.form-info {
+    text-align: center;
+    font-size: larger;
+}
+
 .form-field-container {
     display: flex;
     justify-content: center;
@@ -26,8 +31,4 @@ form {
 
 .form-field-container label {
     flex-basis: 30%;
-}
-
-.form-field-container input {
-    flex-basis: 2;
 }

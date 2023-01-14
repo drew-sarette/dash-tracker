@@ -4,6 +4,7 @@
   --main-text-color: black;
   --accent-color: #00ff8c;
   --border-radius: 3px;
+  --border-size: 3px;
 }
 
 body {
@@ -33,4 +34,23 @@ a:active {
   text-decoration: none;
 }
 
+/* || UTILITIES */
+.clickable {
+  border: 3px solid var(--main-text-color);
+  border-radius: var(--border-radius);
+  align-self: center;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.visually-hidden {
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+.display-none {
+  display: none !important;
+}
 

@@ -9,22 +9,30 @@ body {
     gap: 1em;
   }
   
-  /* || HEADER */
   custom-header {
     grid-area: header;
   }
   
-  /* || INPUT */
   main {
     grid-area: input;
+    justify-self: center;
   }
   
   h2 {
     margin: 8px 0px;
   }
   
-  /* || FOOTER */
   footer {
     grid-area: footer;
     text-align: center;
   }
+
+/* || TABLET */
+@media screen and (min-width: 768px) {
+
+}
+
+/* || DESKTOP */
+@media screen and (min-width: 1200px) {
+  
+}

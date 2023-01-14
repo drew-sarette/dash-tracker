@@ -2,7 +2,7 @@ const headerTemplate = document.createElement("template");
 headerTemplate.innerHTML = `
     <style>
         @import "/css/base-style.css";
-
+        
         .flex-container {
             display: flex;
             justify-content: space-between;
@@ -56,15 +56,6 @@ headerTemplate.innerHTML = `
       }
       ::slotted(img) {
         aspect-ratio: 1;
-      }
-      .visually-hidden {
-        /* clip: rect(0 0 0 0); */
-        /* clip-path: inset(50%); */
-        height: 1px;
-        overflow: hidden;
-        position: absolute;
-        /* white-space: nowrap; */
-        width: 1px;
       }
     </style>
     <header>

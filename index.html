@@ -1,40 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/index.css" />
-    <script src="/js/index.js" defer></script>
-    <script src="js/food-group-element.js" defer></script>
-    <title>DASH Tracker</title>
-  </head>
-  <body>
-    <header>
-      <div class="flex-container">
-        <h1>dash tracker</h1>
-        <button
-          id="menu-button"
-          class="menu-button"
-          aria-controls="primary-navigation"
-          aria-expanded="false"
-        >
-          <span class="visually-hidden">Menu</span>
-          <div class="top-bun"></div>
-          <div class="patty"></div>
-          <div class="bottom-bun"></div>
-        </button>
-      </div>
-      <nav id="primary-navigation">
-        <ul>
-          <li><a href="track-record.html">track record</a></li>
-          <hr>
-          <li><a href="info.html">DASH info</a></li>
-          <hr>
-          <li><a href="your-goals.html">your goals</a></li>
-        </ul>
-      </nav>
-    </header>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/base-style.css">
+    <link rel="stylesheet" href="css/layouts.css">
+    <!-- Cannot use defer because a customized element must be registered before it is instantiated -->
+    <script src="js/custom-header.js"></script>
+    <script src="js/food-group-element.js"></script>
+    <script src="js/index.js" defer></script>     
+    <title>DASH tracker</title>
+</head>
+<body>
+    <custom-header>
+        <h1 slot="title">DASH tracker</h1>
+        <li slot="li"><a href="/">home</a></li>
+        <li slot="li"><a href="info.html">info</a></li>
+        <li slot="li"><a href="track-record.html">track record</a></li>
+        <li slot="li"><a href="your-goals.html">your goals</a></li>
+    </custom-header>
+</body>
+</html>
     <main>
       <h2>today</h2>
       <p>enter your servings for each food group, and mg of sodium</p>

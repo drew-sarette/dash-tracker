@@ -8,3 +8,4 @@
 <a href="https://www.flaticon.com/free-icons/oil" title="oil icons">Oil icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/peanut" title="peanut icons">Peanut icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/beer" title="beer icons">Beer icons created by Freepik - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/food" title="food icons">Food icons created by Freepik - Flaticon</a>

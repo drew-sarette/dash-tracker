@@ -35,7 +35,7 @@ headerTemplate.innerHTML = `
         }
         
         nav {
-            max-height: 0;
+            height: 0;
             overflow-y: hidden;
             transition-property: max-height;
             transition-timing-function: cubic-bezier(0.36, 0.01, 0.71, 1.09);
@@ -43,17 +43,16 @@ headerTemplate.innerHTML = `
         }
         
         .nav-expanded {
-            max-height: 100px; /*height cannot transition to fit-content or auto, using max-height works*/
+            height: 120px; /*height cannot transition to fit-content or auto, using max-height works*/
         }
         
         nav > ul {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: .5em;
         }
-        ul > hr {
-        width: 10%;
-      }
+        
       ::slotted(img) {
         aspect-ratio: 1;
       }

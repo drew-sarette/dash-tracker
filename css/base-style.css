@@ -36,11 +36,15 @@ a:active {
 
 /* || UTILITIES */
 .clickable {
-  border: 3px solid var(--main-text-color);
-  border-radius: var(--border-radius);
   align-self: center;
-  font-size: larger;
+  font-size: large;
   font-weight: bold;
+  transition-property: font-size;
+  transition-duration: .2s
+}
+
+.clickable:hover {
+  font-size: larger;
 }
 
 .visually-hidden {

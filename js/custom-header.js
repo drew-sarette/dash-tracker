@@ -83,13 +83,13 @@ headerTemplate.innerHTML = `
 class CustomHeader extends HTMLElement {// Cannot extend HTMLHeadElement? 
   constructor() {
     super();
-    const shadowRoot = this.attachShadow({ mode: 'open' });
+    const shadowRoot = this.attachShadow({ mode: "open" });
     const clone = headerTemplate.content.cloneNode(true);
     shadowRoot.append(clone);
     // Handle click event for menu button:
-    shadowRoot.getElementById('menu-button').addEventListener('click', () => {
-      shadowRoot.getElementById('menu-button').classList.toggle('menu-button-opened');
-      shadowRoot.getElementById('primary-navigation').classList.toggle('nav-expanded');
+    shadowRoot.getElementById("menu-button").addEventListener("click", () => {
+      shadowRoot.getElementById("menu-button").classList.toggle("menu-button-opened");
+      shadowRoot.getElementById("primary-navigation").classList.toggle("nav-expanded");
     });
   }
 }

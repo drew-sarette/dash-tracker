@@ -1,14 +1,14 @@
 (function () {
   const defaultSettings = {
-    grains: {servings: 8, step: 1, color: "brown"},
-    vegetables: {servings: 5, step: 1, color: "green"},
-    fruits: {servings: 5, step: 1, color: "purple"},
-    meat: {servings: 6, step: 1, color: "red"},
-    dairy: {servings: 3, step: 1, color: "white"},
-    fatsOils: {servings: 3, step: 1, color: "gold"},
-    sodium: {servings: 2300, step: 100, color: "gray"},
-    caffeine: {servings: 200, step: 20, color: "dark-brown"},
-    alcohol: {servings: 1, step: 1, color: "amber"}
+    grains: {servings: 8, step: 1, color: "#ff0000"},
+    vegetables: {servings: 5, step: 1, color: "#ff0000"},
+    fruits: {servings: 5, step: 1, color: "#ff0000"},
+    meat: {servings: 6, step: 1, color: "#ff0000"},
+    dairy: {servings: 3, step: 1, color: "#ff0000"},
+    fatsOils: {servings: 3, step: 1, color: "#ff0000"},
+    sodium: {servings: 2300, step: 100, color: "#ff0000"},
+    caffeine: {servings: 200, step: 20, color: "#ff0000"},
+    alcohol: {servings: 1, step: 1, color: "#ff0000"}
   };
 
   const testToday = {

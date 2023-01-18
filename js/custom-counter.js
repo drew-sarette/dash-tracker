@@ -59,12 +59,15 @@ class CustomCounter extends HTMLElement {
   set current(val) { this.setAttribute("current", val) };
   get max() { return this.getAttribute("max") };
   set max(val) { this.setAttribute("max", val) };
-  get color() { return this.getAttribute("counts") };
+  get color() { return this.getAttribute("color") };
   set color(val) { this.setAttribute("color", val) };
 
   attributeChangedCallback(name, oldVal, newVal) {
-    if (name.toLowerCase() === "counts") {
-      console.log(newVal);
+    if (name.toLowerCase() === "current") {
+      // alert();
+      let gradientPercent = newVal / this.max * 100;
+      this.style.display = "block";
+      this.style.background = `linear-gradient(to right, ${this.color} ${gradientPercent}%, white ${100 - (gradientPercent)}%)`;
     };
   }
   

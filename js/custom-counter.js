@@ -9,7 +9,7 @@ template.innerHTML = `
         align-items: center;
         justify-content: space-between;
         align-items: stretch;
-        height: 50px;
+        max-height: 50px;
       }
 
       button {
@@ -19,8 +19,13 @@ template.innerHTML = `
         border: none;
       }
 
+      span {
+        display: flex;
+        justify-content: center;
+      }
+
       ::slotted(img) {
-        aspect-ratio: 1;
+        max-height: 100%;
         opacity: 50%;
       }
     </style>

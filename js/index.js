@@ -1,16 +1,29 @@
 (function () {
   const defaultSettings = {
-    grains: 8,
-    vegetables: 5,
-    fruits: 5,
-    meat: 6,
-    dairy: 3,
-    fatsOils: 3,
-    sodium: 2300,
-    caffeine: 200,
-    alcohol: 1,
+    grains: {servings: 8, step: 1, color: "brown"},
+    vegetables: {servings: 5, step: 1, color: "green"},
+    fruits: {servings: 5, step: 1, color: "purple"},
+    meat: {servings: 6, step: 1, color: "red"},
+    dairy: {servings: 3, step: 1, color: "white"},
+    fatsOils: {servings: 3, step: 1, color: "gold"},
+    sodium: {servings: 2300, step: 100, color: "gray"},
+    caffeine: {servings: 200, step: 20, color: "dark-brown"},
+    alcohol: {servings: 1, step: 1, color: "amber"}
   };
-  const zero = {
+
+  const testToday = {
+    grains: 4,
+    vegetables: 4,
+    fruits: 4,
+    meat: 3,
+    dairy: 0,
+    fatsOils: 0,
+    sodium: 0,
+    caffeine: 0,
+    alcohol: 0,
+  };
+
+  const zeroToday = {
     grains: 0,
     vegetables: 0,
     fruits: 0,
@@ -26,9 +39,9 @@
   settings ? convertStringsToNumbers(settings) : defaultSettings;
 
   let today = JSON.parse(localStorage.getItem("today"));
-  today ? convertStringsToNumbers(today) : zero;
+  today ? convertStringsToNumbers(today) : zeroToday;
 
-  displayServingCounters(settings, today);
+  displayServingCounters(defaultSettings, testToday);
 })();
 
 function convertStringsToNumbers(obj) {
@@ -43,6 +56,10 @@ function displayServingCounters(settings,today) {
     if (settings[key] !== 0) {
       const foodGroup = document.createElement("custom-counter");
       foodGroup.counts = key;
+      foodGroup.max = settings[key].servings;
+      foodGroup.step = settings[key].step;
+      foodGroup.color = settings[key].color;
+      foodGroup.current = today[key];
       const icon = document.createElement("img");
       icon.src = `img/${key}.png`;
       icon.slot = "icon";

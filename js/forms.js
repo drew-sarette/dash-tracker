@@ -1,9 +1,8 @@
 // document.getElementById("save-settings").addEventListener("click", saveSettings); would like to use this instead of inline, but getElementById returns null?
 (function () {
     try {
-        //Check if settings are saved in localStorage, if so then display them in the form.
         const foundSettings = JSON.parse(localStorage.getItem("settings"));
-        if (!foundSettings) throw new Error("Settings not found");
+        if (!foundSettings) throw new Error("Settings not found")
         for (let key in foundSettings) {
             foundSettings[key] = Number(foundSettings[key]);
         }
@@ -22,7 +21,6 @@
         console.log(error.message);
     }
 })();
-// Save the number of servings currently in the form to localStorage
 function saveSettings() {
   const s = {};
   s.grains = document.getElementById("grains").value;

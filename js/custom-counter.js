@@ -51,15 +51,15 @@ class CustomCounter extends HTMLElement {
   }
 
   //Sync properties and attributes
-  get counts() { return this.counts };
+  get counts() { return this.getAttribute("counts") };
   set counts(val) { this.setAttribute("counts", val) };
-  get step() { return this.step };
+  get step() { return this.getAttribute("step") };
   set step(val) { this.setAttribute("step", val) };
-  get current() { return this.current };
+  get current() { return this.getAttribute("current") };
   set current(val) { this.setAttribute("current", val) };
-  get max() { return this.max };
+  get max() { return this.getAttribute("max") };
   set max(val) { this.setAttribute("max", val) };
-  get color() { return this.color };
+  get color() { return this.getAttribute("counts") };
   set color(val) { this.setAttribute("color", val) };
 
   attributeChangedCallback(name, oldVal, newVal) {

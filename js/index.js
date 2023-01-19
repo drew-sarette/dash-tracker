@@ -64,7 +64,19 @@ function displayServingCounters(settings,today) {
       icon.src = `img/${key}.png`;
       icon.slot = "icon";
       foodGroup.appendChild(icon);
+      
       document.getElementById("input-container").appendChild(foodGroup);
+      foodGroup.shadowRoot.querySelector(".increment").addEventListener("click", ev => increment(ev, foodGroup));
+      foodGroup.shadowRoot.querySelector(".decrement").addEventListener("click", ev => decrement(ev, foodGroup));
+
     }
   }
+}
+
+function increment (ev, foodGroup) {
+  foodGroup.current = Number(foodGroup.current) + Number(foodGroup.step);
+}
+
+function decrement (ev, foodGroup) {
+  foodGroup.current = Number(foodGroup.current) - Number(foodGroup.step);
 }

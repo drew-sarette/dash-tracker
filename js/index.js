@@ -74,7 +74,7 @@ function displayServingCounters(settings,today) {
 }
 
 function increment (ev, foodGroup) {
-  foodGroup.current = Number(foodGroup.current) + Number(foodGroup.step);
+  foodGroup.current = foodGroup.current + foodGroup.step;
 }
 
 function decrement (ev, foodGroup) {

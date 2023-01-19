@@ -1,14 +1,14 @@
 (function () {
   const defaultSettings = {
-    grains: {servings: 8, step: 1, color: "#ff0000"},
-    vegetables: {servings: 5, step: 1, color: "#ff0000"},
-    fruits: {servings: 5, step: 1, color: "#ff0000"},
-    meat: {servings: 6, step: 1, color: "#ff0000"},
-    dairy: {servings: 3, step: 1, color: "#ff0000"},
-    fatsOils: {servings: 3, step: 1, color: "#ff0000"},
-    sodium: {servings: 2300, step: 100, color: "#ff0000"},
-    caffeine: {servings: 200, step: 20, color: "#ff0000"},
-    alcohol: {servings: 1, step: 1, color: "#ff0000"}
+    grains: { servings: 8, step: 1, color: "#ff0000" },
+    vegetables: { servings: 5, step: 1, color: "#ff0000" },
+    fruits: { servings: 5, step: 1, color: "#ff0000" },
+    meat: { servings: 6, step: 1, color: "#ff0000" },
+    dairy: { servings: 3, step: 1, color: "#ff0000" },
+    fatsOils: { servings: 3, step: 1, color: "#ff0000" },
+    sodium: { servings: 2300, step: 100, color: "#ff0000" },
+    caffeine: { servings: 200, step: 20, color: "#ff0000" },
+    alcohol: { servings: 1, step: 1, color: "#ff0000" },
   };
 
   const testToday = {
@@ -51,7 +51,7 @@ function convertStringsToNumbers(obj) {
   return obj;
 }
 
-function displayServingCounters(settings,today) {
+function displayServingCounters(settings, today) {
   for (let key in settings) {
     if (settings[key] !== 0) {
       const foodGroup = document.createElement("custom-counter");
@@ -64,19 +64,27 @@ function displayServingCounters(settings,today) {
       icon.src = `img/${key}.png`;
       icon.slot = "icon";
       foodGroup.appendChild(icon);
-      
-      document.getElementById("input-container").appendChild(foodGroup);
-      foodGroup.shadowRoot.querySelector(".increment").addEventListener("click", ev => increment(ev, foodGroup));
-      foodGroup.shadowRoot.querySelector(".decrement").addEventListener("click", ev => decrement(ev, foodGroup));
 
+      document.getElementById("input-container").appendChild(foodGroup);
+      foodGroup.shadowRoot
+        .querySelector(".increment")
+        .addEventListener("click", (ev) => increment(ev, foodGroup));
+      foodGroup.shadowRoot
+        .querySelector(".decrement")
+        .addEventListener("click", (ev) => decrement(ev, foodGroup));
     }
   }
 }
 
-function increment (ev, foodGroup) {
+function increment(ev, foodGroup) {
   foodGroup.current = foodGroup.current + foodGroup.step;
 }
 
-function decrement (ev, foodGroup) {
-  foodGroup.current = Number(foodGroup.current) - Number(foodGroup.step);
+function decrement(ev, foodGroup) {
+  let result = Number(foodGroup.current) - Number(foodGroup.step);
+  if (result <= 0) {
+    foodGroup.current = 0;
+  } else {
+    foodGroup.current = Number(foodGroup.current) - Number(foodGroup.step);
+  }
 }

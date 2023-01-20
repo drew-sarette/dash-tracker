@@ -1,4 +1,7 @@
-// This custom element will be a block element that counts something (named in the "counts" attribute), by incrementing or decrementing the current value (the "current" attr.) by a specified step value ("step" attr.). The user must add event listeners and callbacks for the increment and decrement buttons. Progress is calculated and displayed in the color named in the "color" attr.
+/* 
+This custom element will be a block element that counts something (named in the "counts" attribute), by incrementing or decrementing the current value (the "current" attr.) by a specified step value ("step" attr.). 
+The user must add event listeners and callbacks for the increment and decrement buttons. Progress is calculated and displayed in the color named in the "color" attr. The user should also provide an icon for the icon slot, and set the max and counts attributes.
+*/
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -9,10 +12,6 @@ template.innerHTML = `
         height: 50px;
       }
 
-      div.container {
-        max-height: 50px;
-      }
-
       button {
         aspect-ratio: 1;
         background-color: none;
@@ -20,36 +19,40 @@ template.innerHTML = `
         border: none;
       }
 
-      .increment {
-        margin-left: auto;
+      .info {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
       }
 
-      span.progress {
+      div.progress {
         flex: auto;
       }
+
       .percent-complete {
         height: 100%;
       }
 
-      span.info {
+      ::slotted(img) {
+        max-height: 100%;
+        opacity: 40%;
         position: absolute;
-        height: 50px;
         left: 50%;
         transform: translate(-50%);
       }
-
-      ::slotted(img) {
-        max-height: 100%;
-        opacity: 50%;
-      }
     </style>
     <button class="decrement"><img src="img/decrement.png"></button>
-    <span class="info">
-      <slot name="icon"></slot>
-    </span>
-    <span class="progress">
+    <slot name="icon"></slot>
+    <div class="info">
+      <b class="current-val"></b>
+      out of 
+      <b class="max-val"></b>
+      <b class="counts-val"></b>
+    </div> 
+    <div class="progress">
       <div class="percent-complete"></div>
-    </span>
+    </div>
     <button class="increment"><img src="img/increment.png"></button>
   `;
 
@@ -95,7 +98,11 @@ class CustomCounter extends HTMLElement {
         background-color: ${this.color};
         width: ${percentComplete}%;
       `;
-  
+      this.shadowRoot.querySelector("b.current-val").textContent = newVal;
+      this.shadowRoot.querySelector("b.max-val").textContent = this.max;  
+    }
+    if (name.toLowerCase() === "counts") {
+      this.shadowRoot.querySelector("b.counts-val").textContent = this.counts;  
     }
   }
 }

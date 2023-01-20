@@ -1,14 +1,15 @@
-// This custom element will be a block element that displays 
-
+// This custom element will be a block element that counts something (named in the "counts" attribute), by incrementing or decrementing the current value (the "current" attr.) by a specified step value ("step" attr.). The user must add event listeners and callbacks for the increment and decrement buttons. Progress is calculated and displayed in the color named in the "color" attr.
 
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
-      div {
+      :host {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        align-items: stretch;
+        position: relative;
+        height: 50px;
+      }
+
+      div.container {
         max-height: 50px;
       }
 
@@ -19,9 +20,22 @@ template.innerHTML = `
         border: none;
       }
 
-      span {
-        display: flex;
-        justify-content: center;
+      .increment {
+        margin-left: auto;
+      }
+
+      span.progress {
+        flex: auto;
+      }
+      .percent-complete {
+        height: 100%;
+      }
+
+      span.info {
+        position: absolute;
+        height: 50px;
+        left: 50%;
+        transform: translate(-50%);
       }
 
       ::slotted(img) {
@@ -29,13 +43,15 @@ template.innerHTML = `
         opacity: 50%;
       }
     </style>
-    <div>
-        <button class="decrement"><img src="img/decrement.png"></button>
-          <span>
-            <slot name="icon"></slot>
-          </span>
-        <button class="increment"><img src="img/increment.png"></button>
-    </div>`;
+    <button class="decrement"><img src="img/decrement.png"></button>
+    <span class="info">
+      <slot name="icon"></slot>
+    </span>
+    <span class="progress">
+      <div class="percent-complete"></div>
+    </span>
+    <button class="increment"><img src="img/increment.png"></button>
+  `;
 
 class CustomCounter extends HTMLElement {
   constructor() {
@@ -47,29 +63,40 @@ class CustomCounter extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["counts", "step", "current", "max", "color"]
+    return ["counts", "step", "current", "max", "color"];
   }
 
   //Sync properties and attributes
-  get counts() { return this.getAttribute("counts") };
-  set counts(val) { this.setAttribute("counts", val) };
-  get step() { return Number(this.getAttribute("step")) };
-  set step(val) { this.setAttribute("step", val) };
-  get current() { return Number(this.getAttribute("current")) };
-  set current(val) { this.setAttribute("current", val) };
-  get max() { return Number(this.getAttribute("max")) };
-  set max(val) { this.setAttribute("max", val) };
-  get color() { return this.getAttribute("color") };
-  set color(val) { this.setAttribute("color", val) };
+  get counts() { return this.getAttribute("counts") }
+  set counts(val) { this.setAttribute("counts", val) }
+  get step() { return Number(this.getAttribute("step")) }
+  set step(val) { this.setAttribute("step", val) }
+  get current() { return Number(this.getAttribute("current")) }
+  set current(val) { this.setAttribute("current", val) }
+  get max() { return Number(this.getAttribute("max")) }
+  set max(val) { this.setAttribute("max", val) }
+  get color() { return this.getAttribute("color") }
+  set color(val) { this.setAttribute("color", val) }
 
   attributeChangedCallback(name, oldVal, newVal) {
     if (name.toLowerCase() === "current") {
-      // alert();
-      let gradientPercent = newVal / this.max * 100;
-      this.style.display = "block";
-      this.style.background = `linear-gradient(to right, ${this.color} ${gradientPercent}%, white ${100 - (gradientPercent)}%)`;
-    };
-  }
+      let percentComplete = (this.current / this.max) * 100;
+      console.log()
+      if (percentComplete > 100){ 
+        percentComplete = 100;
+      }
+      else if (percentComplete < 1) {
+        percentComplete = 0;
+      }
+      else if ((typeof percentComplete) != "number"){
+        console.log(`Error: ${this.counts} had current value of ${newVal} and max of ${this.max}`);
+      } 
+      this.shadowRoot.querySelector(".percent-complete").style.cssText = `
+        background-color: ${this.color};
+        width: ${percentComplete}%;
+      `;
   
+    }
+  }
 }
 customElements.define("custom-counter", CustomCounter);

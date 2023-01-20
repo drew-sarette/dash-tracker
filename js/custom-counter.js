@@ -19,15 +19,24 @@ template.innerHTML = `
         border: none;
       }
 
-      .info {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-
       div.progress {
         flex: auto;
+        position: relative;
+      }
+
+      .info {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .info * {
+        flex-basis: 33.333%;
+        text-align: center;
       }
 
       .percent-complete {
@@ -35,22 +44,19 @@ template.innerHTML = `
       }
 
       ::slotted(img) {
-        max-height: 100%;
+        height: 50px;
         opacity: 40%;
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%);
       }
     </style>
     <button class="decrement"><img src="img/decrement.png"></button>
-    <slot name="icon"></slot>
-    <div class="info">
-      <b class="current-val"></b>
-      out of 
-      <b class="max-val"></b>
-      <b class="counts-val"></b>
-    </div> 
     <div class="progress">
+      <div class="info">
+        <div>
+          <b class="current-val"></b>/<b class="max-val"></b>
+        </div>
+        <slot name="icon"></slot>
+        <b class="counts-val"></b>
+      </div> 
       <div class="percent-complete"></div>
     </div>
     <button class="increment"><img src="img/increment.png"></button>

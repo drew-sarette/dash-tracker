@@ -6,17 +6,13 @@ The user must add event listeners and callbacks for the increment and decrement 
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
+      @import "/css/base-style.css";
+
       :host {
         display: flex;
         position: relative;
         height: 50px;
-      }
-
-      button {
-        aspect-ratio: 1;
-        background-color: none;
-        border-radius: 0;
-        border: none;
+        border-radius: var(--border-radius);
       }
 
       div.progress {
@@ -48,7 +44,7 @@ template.innerHTML = `
         opacity: 40%;
       }
     </style>
-    <button class="decrement"><img src="img/decrement.png"></button>
+    <button class="decrement color"><img src="img/decrement.png"></button>
     <div class="progress">
       <div class="info">
         <div>
@@ -57,9 +53,9 @@ template.innerHTML = `
         <slot name="icon"></slot>
         <b class="counts-val"></b>
       </div> 
-      <div class="percent-complete"></div>
+      <div class="percent-complete color"></div>
     </div>
-    <button class="increment"><img src="img/increment.png"></button>
+    <button class="increment color"><img src="img/increment.png"></button>
   `;
 
 class CustomCounter extends HTMLElement {
@@ -88,7 +84,7 @@ class CustomCounter extends HTMLElement {
   set color(val) { this.setAttribute("color", val) }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    if (name.toLowerCase() === "current") {
+    if ((name.toLowerCase() === "current")||(name.toLowerCase() === "max")) {
       let percentComplete = (this.current / this.max) * 100;
       console.log()
       if (percentComplete > 100){ 
@@ -107,9 +103,11 @@ class CustomCounter extends HTMLElement {
       this.shadowRoot.querySelector("b.current-val").textContent = newVal;
       this.shadowRoot.querySelector("b.max-val").textContent = this.max;  
     }
-    if (name.toLowerCase() === "counts") {
-      this.shadowRoot.querySelector("b.counts-val").textContent = this.counts;  
-    }
+
+    if (name.toLowerCase() === "color") {
+      this.shadowRoot.querySelectorAll("percent-complete").style.background = this.color;
+    }  
+    
   }
 }
 customElements.define("custom-counter", CustomCounter);

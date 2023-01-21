@@ -18,10 +18,6 @@ body {
     justify-self: center;
   }
   
-  h2 {
-    margin: 8px 0px;
-  }
-  
   footer {
     grid-area: footer;
     text-align: center;

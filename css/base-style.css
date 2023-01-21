@@ -1,10 +1,10 @@
 /* || BASE STYLES */
 :root {
-  --main-bg-color: white;
-  --main-text-color: black;
   --accent-color: #00ff8c;
   --border-radius: 3px;
   --border-size: 3px;
+  --main-bg-color: white;
+  --main-text-color: black;
 }
 
 body {

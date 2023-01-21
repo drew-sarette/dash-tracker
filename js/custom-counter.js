@@ -12,23 +12,29 @@ template.innerHTML = `
         display: flex;
         position: relative;
         height: 50px;
+        border: var(--border-size) solid var(--main-text-color);
         border-radius: var(--border-radius);
+      }
+
+      button {
+        filter: grayscale(20%);
       }
 
       div.progress {
         flex: auto;
         position: relative;
+        transition: width .5s;
       }
 
       .info {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
+        align-items: center;
         bottom: 0;
         display: flex;
         justify-content: center;
-        align-items: center;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
       }
       .info * {
         flex-basis: 33.333%;
@@ -72,42 +78,65 @@ class CustomCounter extends HTMLElement {
   }
 
   //Sync properties and attributes
-  get counts() { return this.getAttribute("counts") }
-  set counts(val) { this.setAttribute("counts", val) }
-  get step() { return Number(this.getAttribute("step")) }
-  set step(val) { this.setAttribute("step", val) }
-  get current() { return Number(this.getAttribute("current")) }
-  set current(val) { this.setAttribute("current", val) }
-  get max() { return Number(this.getAttribute("max")) }
-  set max(val) { this.setAttribute("max", val) }
-  get color() { return this.getAttribute("color") }
-  set color(val) { this.setAttribute("color", val) }
+  get counts() {
+    return this.getAttribute("counts");
+  }
+  set counts(val) {
+    this.setAttribute("counts", val);
+  }
+  get step() {
+    return Number(this.getAttribute("step"));
+  }
+  set step(val) {
+    this.setAttribute("step", val);
+  }
+  get current() {
+    return Number(this.getAttribute("current"));
+  }
+  set current(val) {
+    this.setAttribute("current", val);
+  }
+  get max() {
+    return Number(this.getAttribute("max"));
+  }
+  set max(val) {
+    this.setAttribute("max", val);
+  }
+  get color() {
+    return this.getAttribute("color");
+  }
+  set color(val) {
+    this.setAttribute("color", val);
+  }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    if ((name.toLowerCase() === "current")||(name.toLowerCase() === "max")) {
-      let percentComplete = (this.current / this.max) * 100;
-      console.log()
-      if (percentComplete > 100){ 
-        percentComplete = 100;
-      }
-      else if (percentComplete < 1) {
-        percentComplete = 0;
-      }
-      else if ((typeof percentComplete) != "number"){
-        console.log(`Error: ${this.counts} had current value of ${newVal} and max of ${this.max}`);
-      } 
-      this.shadowRoot.querySelector(".percent-complete").style.cssText = `
+    this.updateDisplay();
+  }
+
+  updateDisplay() {
+    const percentComplete = this.calculateProgress();
+    this.shadowRoot.querySelector(".percent-complete").style.cssText = `
         background-color: ${this.color};
         width: ${percentComplete}%;
       `;
-      this.shadowRoot.querySelector("b.current-val").textContent = newVal;
-      this.shadowRoot.querySelector("b.max-val").textContent = this.max;  
-    }
+    this.shadowRoot.querySelector("b.current-val").textContent = this.current;
+    this.shadowRoot.querySelector("b.max-val").textContent = this.max;
+    this.shadowRoot.querySelector("b.counts-val").textContent = this.counts;
+    this.shadowRoot.querySelectorAll(".color").forEach(e => e.style.backgroundColor = this.color);
+  }
 
-    if (name.toLowerCase() === "color") {
-      this.shadowRoot.querySelectorAll("percent-complete").style.background = this.color;
-    }  
-    
+  calculateProgress() {
+    let percentComplete = (this.current / this.max) * 100;
+    if (percentComplete > 100) {
+      return 100;
+    }
+    else if (percentComplete >= 0) {
+      return percentComplete;
+    }
+    else {
+      console.log("Error: percent complete = " + percentComplete);
+      return 0;
+    }
   }
 }
 customElements.define("custom-counter", CustomCounter);

@@ -1,80 +1,55 @@
+
 (function () {
-  const defaultSettings = {
-    grains: { servings: 8, step: 1, color: "#ff0000" },
-    vegetables: { servings: 5, step: 1, color: "#ff0000" },
-    fruits: { servings: 5, step: 1, color: "#ff0000" },
-    meat: { servings: 6, step: 1, color: "#ff0000" },
-    dairy: { servings: 3, step: 1, color: "#ff0000" },
-    fatsOils: { servings: 3, step: 1, color: "#ff0000" },
-    sodium: { servings: 2300, step: 100, color: "#ff0000" },
-    caffeine: { servings: 200, step: 20, color: "#ff0000" },
-    alcohol: { servings: 1, step: 1, color: "#ff0000" },
-  };
-
-  const testToday = {
-    grains: 4,
-    vegetables: 4,
-    fruits: 4,
-    meat: 3,
-    dairy: 0,
-    fatsOils: 0,
-    sodium: 0,
-    caffeine: 0,
-    alcohol: 0,
-  };
-
-  const zeroToday = {
-    grains: 0,
-    vegetables: 0,
-    fruits: 0,
-    meat: 0,
-    dairy: 0,
-    fatsOils: 0,
-    sodium: 0,
-    caffeine: 0,
-    alcohol: 0,
-  };
-
+  const defaultSettings = [
+    { name:"grains", jsVariable: "grains", htmlID: "grains", timeFrame: "daily", servings: 8, step: 1, color: "#996633" },
+    { name:"vegetables", jsVariable: "vegetables", htmlID: "vegetables", timeFrame: "daily", servings: 5, step: 1, color: "#00cc00" },
+    { name:"fruits", jsVariable: "fruits", htmlID: "fruits", timeFrame: "daily", servings: 5, step: 1, color: "#ffff00" },
+    { name:"meat", jsVariable: "meat", htmlID: "meat", timeFrame: "daily", servings: 6, step: 1, color: "#cc0000" },
+    { name:"dairy", jsVariable: "dairy", htmlID: "dairy", timeFrame: "daily", servings: 3, step: 1, color: "#ffffcc" },
+    { name:"fats & oils", jsVariable: "fatsOils", htmlID: "fats-oils", timeFrame: "daily", servings: 3, step: 1, color: "#ff66ff" },
+    { name:"sodium", jsVariable: "sodium", htmlID: "sodium", timeFrame: "daily", servings: 2300, step: 100, color: "#00ffff" },
+    { name:"caffeine", jsVariable: "caffeine", htmlID: "caffeine", timeFrame: "daily", servings: 200, step: 20, color: "#ff6666" },
+    { name:"sweets", jsVariable: "sweets", htmlID: "sweets", timeFrame: "weekly", servings: 4, step: 1, color: "#993366" },
+    { name:"nuts, seeds & legumes", jsVariable: "nutsSeedsLegumes", htmlID: "nuts-seeds-legumes", timeFrame: "weekly", servings: 4, step: 1, color: "#006699" },
+    { name:"alcohol", jsVariable: "alcohol", htmlID: "alcohol", timeFrame: "weekly", servings: 4, step: 1, color: "#ff6666" }
+  ]
   let settings = JSON.parse(localStorage.getItem("settings"));
-  settings ? convertStringsToNumbers(settings) : defaultSettings;
-
-  let today = JSON.parse(localStorage.getItem("today"));
-  today ? convertStringsToNumbers(today) : zeroToday;
-
-  displayServingCounters(defaultSettings, testToday);
+  if (!settings) {settings = defaultSettings};
+  console.log(settings);
+  displayServingCounters(settings);
 })();
 
-function convertStringsToNumbers(obj) {
-  for (let key in obj) {
-    obj[key] = Number(obj[key]);
-  }
-  return obj;
+function displayServingCounters(settings) {
+  const dailyCounters = settings
+    .filter(s => s.timeFrame === "daily")
+    .map(createFoodGroup);
+  document.getElementById("daily-counters").append(...dailyCounters);
+
+  const weeklyCounters = settings
+    .filter(s => s.timeFrame === "weekly")
+    .map(createFoodGroup);
+  document.getElementById("weekly-counters").append(...weeklyCounters);
 }
 
-function displayServingCounters(settings, today) {
-  for (let key in settings) {
-    if (settings[key] !== 0) {
-      const foodGroup = document.createElement("custom-counter");
-      foodGroup.counts = key;
-      foodGroup.max = settings[key].servings;
-      foodGroup.step = settings[key].step;
-      foodGroup.color = settings[key].color;
-      foodGroup.current = today[key];
-      const icon = document.createElement("img");
-      icon.src = `img/${key}.png`;
-      icon.slot = "icon";
-      foodGroup.appendChild(icon);
-
-      document.getElementById("input-container").appendChild(foodGroup);
-      foodGroup.shadowRoot
-        .querySelector(".increment")
-        .addEventListener("click", (ev) => increment(ev, foodGroup));
-      foodGroup.shadowRoot
-        .querySelector(".decrement")
-        .addEventListener("click", (ev) => decrement(ev, foodGroup));
-    }
-  }
+function createFoodGroup(sObj) {
+  const foodGroup = document.createElement("custom-counter");
+  foodGroup.counts = sObj.jsVariable;
+  foodGroup.max = sObj.servings;
+  foodGroup.step = sObj.step;
+  foodGroup.color = sObj.color;
+  const icon = document.createElement("img");
+  icon.src = `img/${sObj.jsVariable}.png`;
+  icon.slot = "icon";
+  foodGroup.appendChild(icon);
+  foodGroup.shadowRoot
+    .querySelector(".increment")
+    .addEventListener("click", (ev) => increment(ev, foodGroup));
+  foodGroup.shadowRoot
+    .querySelector(".decrement")
+    .addEventListener("click", (ev) => decrement(ev, foodGroup));
+  return foodGroup;
 }
+
 
 function increment(ev, foodGroup) {
   foodGroup.current = foodGroup.current + foodGroup.step;

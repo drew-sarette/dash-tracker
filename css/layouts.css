@@ -4,7 +4,7 @@ body {
     grid-template-rows: max-content auto max-content;
     grid-template-areas:
       "header"
-      "input"
+      "main"
       "footer";
     gap: 1em;
   }
@@ -14,8 +14,10 @@ body {
   }
   
   main {
-    grid-area: input;
+    grid-area: main;
     justify-self: center;
+    min-width: 95%;
+
   }
   
   footer {

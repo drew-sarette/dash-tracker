@@ -10,6 +10,7 @@ template.innerHTML = `
 
       :host {
         display: flex;
+        justify-content: space-between;
         position: relative;
         height: 50px;
         border: var(--border-size) solid var(--main-text-color);
@@ -17,50 +18,56 @@ template.innerHTML = `
       }
 
       button {
-        filter: grayscale(20%);
+        filter: grayscale(30%);
+        background: transparent;
+        z-index: 1; // need this to get decrement button to be clickable. Why?
       }
-
+      
       div.progress {
-        flex: auto;
-        position: relative;
-        transition: width .5s;
-      }
-
-      .info {
-        align-items: center;
-        bottom: 0;
-        display: flex;
-        justify-content: center;
-        left: 0;
         position: absolute;
+        top: 0px;
+        left: 0;
+        bottom: 0;
         right: 0;
-        top: 0;
-      }
-      .info * {
-        flex-basis: 33.333%;
-        text-align: center;
       }
 
       .percent-complete {
         height: 100%;
       }
 
+      .info {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        top: 0px;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+      .info * {
+        flex-basis: 33.333%;
+        text-align: center;
+      }
+
       ::slotted(img) {
-        height: 50px;
+        height: 90%;
         opacity: 40%;
       }
     </style>
-    <button class="decrement color"><img src="img/decrement.png"></button>
+    
     <div class="progress">
-      <div class="info">
-        <div>
-          <b class="current-val"></b>/<b class="max-val"></b>
-        </div>
-        <slot name="icon"></slot>
-        <b class="counts-val"></b>
-      </div> 
       <div class="percent-complete color"></div>
     </div>
+    <button class="decrement color"><img src="img/decrement.png"></button>
+    <div class="info">
+      <div>
+        <b class="current-val"></b>/<b class="max-val"></b>
+      </div>
+      <slot name="icon"></slot>
+      <b class="name"></b>
+    </div> 
     <button class="increment color"><img src="img/increment.png"></button>
   `;
 
@@ -69,12 +76,11 @@ class CustomCounter extends HTMLElement {
     super();
     const shadowRoot = this.attachShadow({ mode: "open" });
     const clone = template.content.cloneNode(true);
-    console.log(clone);
     shadowRoot.appendChild(clone);
   }
 
   static get observedAttributes() {
-    return ["counts", "step", "current", "max", "color"];
+    return ["counts", "step", "current", "max", "color", "name"];
   }
 
   //Sync properties and attributes
@@ -108,6 +114,12 @@ class CustomCounter extends HTMLElement {
   set color(val) {
     this.setAttribute("color", val);
   }
+  get name() {
+    return this.getAttribute("name");
+  }
+  set name(val) {
+    this.setAttribute("name", val);
+  }
 
   attributeChangedCallback(name, oldVal, newVal) {
     this.updateDisplay();
@@ -121,8 +133,8 @@ class CustomCounter extends HTMLElement {
       `;
     this.shadowRoot.querySelector("b.current-val").textContent = this.current;
     this.shadowRoot.querySelector("b.max-val").textContent = this.max;
-    this.shadowRoot.querySelector("b.counts-val").textContent = this.counts;
-    this.shadowRoot.querySelectorAll(".color").forEach(e => e.style.backgroundColor = this.color);
+    this.shadowRoot.querySelector("b.name").textContent = this.name;
+    this.shadowRoot.querySelector(".progress").backgroundColor = this.color;
   }
 
   calculateProgress() {

@@ -41,6 +41,12 @@ input {
 }
 
 /* || UTILITIES */
+.flex-column-gap {
+  display: flex;
+  flex-direction: column;
+  gap: .3em;
+}
+
 .clickable {
   align-self: center;
   font-size: large;

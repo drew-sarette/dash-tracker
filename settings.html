@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/base-style.css" />
     <link rel="stylesheet" href="css/layouts.css" />
-    <link rel="stylesheet" href="css/form.css" />
+    <link rel="stylesheet" href="css/settings.css" />
     <!-- Cannot use defer because a customized element must be registered before it is instantiated -->
     <script src="js/custom-header.js"></script>
-    <script src="js/forms.js" defer></script>
+    <script src="js/settings.js" defer></script>
     <title>settings</title>
   </head>
   <body>
@@ -21,121 +21,30 @@
       <li slot="li" class="clickable"><a href="settings.html">settings</a></li>
     </custom-header>
     <main>
+      <h2>Set your serving goals:</h2>
+      <p>Enter 0 to ingore a category.</p>
       <form id="adjust-servings" action="#">
-        <div class="form-info">
-          <h3>Set your daily serving goals:</h3>
-          <p>Enter 0 to ingore a category.</p>
+        <div id="daily-settings">
+          <h2>daily</h2>
+          <!-- each foodgroup's settings inserted here by settings.js: 
+            <div class="form-field-container">
+              <label for="${sObj.htmlID}">${sObj.name}</label>
+              <input
+                type="number"
+                name=""
+                id="${sObj.htmlID}"
+                min="0"
+                max="16"
+                value="${sObj.servings}"
+              />
+              <input type="color" name="" id="" min="0" max=""/>
+            </div> -->
         </div>
-        <div class="form-field-container">
-          <label for="grains">grains</label
-          ><input
-            type="number"
-            name=""
-            id="grains"
-            min="0"
-            max="12"
-            value="8"
-          />
+        <div id="weekly-settings">
+          <h2>weekly</h2>
+          <!-- weekly settings here -->
         </div>
-        <div class="form-field-container">
-          <label for="vegetables">vegetables</label
-          ><input
-            type="number"
-            name=""
-            id="vegetables"
-            min="0"
-            max="12"
-            value="5"
-          />
-        </div>
-        <div class="form-field-container">
-          <label for="fruits">fruits</label
-          ><input
-            type="number"
-            name=""
-            id="fruits"
-            min="0"
-            max="12"
-            value="5"
-          />
-        </div>
-        <div class="form-field-container">
-          <label for="dairy">dairy</label
-          ><input type="number" name="" id="dairy" min="0" max="12" value="3" />
-        </div>
-        <div class="form-field-container">
-          <label for="meat">meat</label
-          ><input type="number" name="" id="meat" min="0" max="12" value="6" />
-        </div>
-        <div class="form-field-container">
-          <label for="nuts-seeds-legumes">nuts, seeds, & legumes</label
-          ><input
-            type="number"
-            name=""
-            id="nuts-seeds-legumes"
-            min="0"
-            max="12"
-            value="1"
-          />
-        </div>
-        <div class="form-field-container">
-          <label for="fats-oils"> fats & oils</label
-          ><input
-            type="number"
-            name=""
-            id="fats-oils"
-            min="0"
-            max="12"
-            value="3"
-          />
-        </div>
-        <div class="form-field-container">
-          <label for="sodium">sodium (mg)</label
-          ><input
-            type="number"
-            name=""
-            id="sodium"
-            min="0"
-            max="4000"
-            step="100"
-            value="2300"
-          />
-        </div>
-        <div class="form-field-container">
-          <label for="sweets">sweets</label
-          ><input type="number" name="" id="sweets" min="0" max="4" value="1" />
-        </div>
-        <div class="form-field-container">
-          <label for="caffeine">caffeine (mg)</label
-          ><input
-            type="number"
-            name=""
-            id="caffeine"
-            min="0"
-            max="400"
-            step="10"
-            value="200"
-          />
-        </div>
-        <div class="form-field-container">
-          <label for="alcohol">alcohol</label
-          ><input
-            type="number"
-            name=""
-            id="alcohol"
-            min="0"
-            max="4"
-            value="1"
-          />
-        </div>
-        <button
-          id="save-settings"
-          type="button"
-          class="clickable"
-          onclick="saveSettings()"
-        >
-          save
-        </button>
+        <button id="save-settings" type="button" class="clickable" >save</button>
       </form>
     </main>
   </body>

@@ -38,7 +38,8 @@ function displaySettings(settings) {
         name=""
         id="${sObj.htmlID}-servings"
         min="0"
-        max="16"
+        max="5000"
+        step="${sObj.step}"
         value="${sObj.servings}"
       />
       <input type="color" name="" id="${sObj.htmlID}-color" value="${sObj.color}"/>

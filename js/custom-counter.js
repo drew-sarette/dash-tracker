@@ -121,8 +121,26 @@ class CustomCounter extends HTMLElement {
     this.setAttribute("name", val);
   }
 
+  connectedCallback() {
+    this.shadowRoot.querySelector(".increment").addEventListener("click", () => {
+      this.current += this.step;
+    });
+    this.shadowRoot.querySelector(".decrement").addEventListener("click", () => {
+      let result = this.current - this.step;
+      if (result <= 0) {
+        this.current = 0;
+      } else {
+        this.current = result;
+      }
+    });
+  }
+
   attributeChangedCallback(name, oldVal, newVal) {
+    name.toLowerCase();
     this.updateDisplay();
+    if (name === "current") {
+      this.saveCurrentCount();
+    }   
   }
 
   updateDisplay() {

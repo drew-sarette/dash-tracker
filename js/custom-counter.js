@@ -136,11 +136,8 @@ class CustomCounter extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    name.toLowerCase();
-    this.updateDisplay();
-    if (name === "current") {
-      this.saveCurrentCount();
-    }   
+    // name.toLowerCase();
+    this.updateDisplay();  
   }
 
   updateDisplay() {

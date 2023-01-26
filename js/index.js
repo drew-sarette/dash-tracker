@@ -44,7 +44,7 @@ function createCounter(sObj) {
     counter.addEventListener("click", ev => saveToday(ev));
   }
   else {
-    counter.addEventListener("click", ev => saveThisWeek(ev));
+    counter.addEventListener("click", ev => saveWeek(ev));
   }
 
   return counter;
@@ -64,9 +64,10 @@ function loadData(...storedItems) {
 }
 
 function saveToday(ev) {
+  // Save user input to today object in localstorage, or store old day and start new day if day has changed
   const freshStart = {grains: 0, fruits: 0, vegetables: 0, meat: 0, dairy: 0, fatsOils: 0, sodium: 0, caffeine: 0, date: new Date()};
   let today = JSON.parse(localStorage.getItem("today")) ?? freshStart;
-  if (dayHasPassed(new Date("January 1, 2023"))) {
+  if (dayHasPassed(today.date)) {
     storeOldDay(today);
     document.querySelectorAll("#daily-counters custom-counter").forEach(counter => counter.current = 0);
     today = freshStart;
@@ -77,17 +78,16 @@ function saveToday(ev) {
   }
 }
 
-
-
-function saveThisWeek(ev) {
-  
-  const thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? {nutsSeedsLegumes: 0, sweets: 0, alcohol: 0, startDate: new Date()};
-  if (weekHasPassed(thisWeek.startDate)) {
-    startNewWeek(thisWeek);
+function saveWeek(ev) {
+  const freshStart = {nutsSeedsLegumes: 0, sweets: 0, alcohol: 0, date: new Date()};
+  let thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? freshStart;
+  if (false) {
+    storeOldWeek(thisWeek);
+    document.querySelectorAll("#weekly-counters custom-counter").forEach(counter => counter.current = 0);
+    thisWeek = freshStart;
   }
   else {
     thisWeek[ev.target.counts] = ev.target.current;
-    thisWeek.startDate = new Date();
     localStorage.setItem("thisWeek", JSON.stringify(thisWeek));
   }
 }
@@ -102,12 +102,14 @@ function dayHasPassed(today) {
 
 function weekHasPassed(startDate) {
   //Determines if at least seven  calendar days passed after startDate
-  const today = new Date();
-  passedMS = today.getTime() - startDate.getTime()
+  const checkDate = new Date(startDate);
+  const currentDate = new Date();
+  const passedMS = currentDate.getTime() - checkDate.getTime();
+  console.log(`Start: ${checkDate.getTime()} Now: ${currentDate.getTime()} Diff: ${passedMS}`);
   if (passedMS < 518400000) { // Under 6 days
     return false;
   }
-  else if (passedMS < 604800000 && (today.getDay() === startDate.getDay())) { // Between 6 and 7 24h days, but the day of week is the same
+  else if (passedMS < 604800000 && (today.getDay() === checkDate.getDay())) { // Between 6 and 7 24h days, but the day of week is the same
     return true;
   }
   else {
@@ -127,6 +129,13 @@ function storeOldDay(oldDay) {
   localStorage.setItem("days", JSON.stringify(days));
 }
 
-function startNewWeek() {
-  console.log("Start new week");
+function storeOldWeek(oldWeek) {
+  let weeks = JSON.parse(localStorage.getItem("weeks"));
+  if (weeks) {
+    weeks.push(oldWeek);
+  }
+  else {
+    weeks = [oldWeek];
+  }
+  localStorage.setItem("weeks", JSON.stringify(weeks));
 }

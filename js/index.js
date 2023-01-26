@@ -41,10 +41,10 @@ function createCounter(sObj) {
   icon.slot = "icon";
   counter.appendChild(icon);
   if (sObj.timeFrame === "daily") {
-    counter.addEventListener("click", () => saveToday);
+    counter.addEventListener("click", ev => saveToday(ev));
   }
   else {
-    counter.addEventListener("click", () => saveThisWeek);
+    counter.addEventListener("click", ev => saveThisWeek(ev));
   }
 
   return counter;
@@ -56,6 +56,7 @@ function loadData(...storedItems) {
     const data = JSON.parse(localStorage.getItem(item));
     if (data) {
     for (const key in data) {
+      if (key === "date") { break; }
       document.getElementById(key).current = data[key];
     }
   }
@@ -63,21 +64,24 @@ function loadData(...storedItems) {
 }
 
 function saveToday(ev) {
-  const startFromZero = {grains: 0, fruits: 0, vegetables: 0, meat: 0, dairy: 0, fatsOils: 0, sodium: 0, caffeine: 0, date: new Date()}
-  const today = JSON.parse(localStorage.getItem("today")) ?? startFromZero;
-  if (dayHasPassed(today.date)) {
-    startNewDay(today);
+  const freshStart = {grains: 0, fruits: 0, vegetables: 0, meat: 0, dairy: 0, fatsOils: 0, sodium: 0, caffeine: 0, date: new Date()};
+  let today = JSON.parse(localStorage.getItem("today")) ?? freshStart;
+  if (dayHasPassed(new Date("January 1, 2023"))) {
+    storeOldDay(today);
+    document.querySelectorAll("#daily-counters custom-counter").forEach(counter => counter.current = 0);
+    today = freshStart;
   }
   else {
     today[ev.target.counts] = ev.target.current;
-    today.date = new Date();
     localStorage.setItem("today", JSON.stringify(today));
   }
 }
 
+
+
 function saveThisWeek(ev) {
-  const startFromZero = {nutsSeedsLegumes: 0, sweets: 0, alcohol: 0, startDate: new Date()}
-  const thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? startFromZero;
+  
+  const thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? {nutsSeedsLegumes: 0, sweets: 0, alcohol: 0, startDate: new Date()};
   if (weekHasPassed(thisWeek.startDate)) {
     startNewWeek(thisWeek);
   }
@@ -88,13 +92,16 @@ function saveThisWeek(ev) {
   }
 }
 
-function dayHasPassed(startDate) {
-  const today = new Date();
-  return(today.toDateString() ===  startDate.toDateString());
+function dayHasPassed(today) {
+  //return true if today object's date is not current day
+  const checkDate = new Date(today); //Rehydrate the date object. Comes back as a string :-(
+  const currentDate = new Date();
+  const torf = (checkDate.toDateString() !==  currentDate.toDateString());
+  return torf;
 }
 
 function weekHasPassed(startDate) {
-  //Determines if at least seven days after startDate; 
+  //Determines if at least seven  calendar days passed after startDate
   const today = new Date();
   passedMS = today.getTime() - startDate.getTime()
   if (passedMS < 518400000) { // Under 6 days
@@ -108,7 +115,8 @@ function weekHasPassed(startDate) {
   }
 }
 
-function startNewDay(oldDay) {
+function storeOldDay(oldDay) {
+  // Add old day to the localstorage days item, 
   let days = JSON.parse(localStorage.getItem("days"));
   if (days){
     days.push(oldDay);

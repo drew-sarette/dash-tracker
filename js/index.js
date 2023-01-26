@@ -5,8 +5,8 @@ const defaultSettings = [
   { name:"meat", jsVariable: "meat", timeFrame: "daily", servings: 6, step: 1, color: "#cc0000" },
   { name:"dairy", jsVariable: "dairy", timeFrame: "daily", servings: 3, step: 1, color: "#ffffcc" },
   { name:"fats & oils", jsVariable: "fatsOils", timeFrame: "daily", servings: 3, step: 1, color: "#ff66ff" },
-  { name:"sodium", jsVariable: "sodium", timeFrame: "daily", servings: 2300, step: 100, color: "#00ffff" },
-  { name:"caffeine", jsVariable: "caffeine", timeFrame: "daily", servings: 200, step: 20, color: "#ff6666" },
+  { name:"sodium (mg)", jsVariable: "sodium", timeFrame: "daily", servings: 2300, step: 100, color: "#00ffff" },
+  { name:"caffeine (mg)", jsVariable: "caffeine", timeFrame: "daily", servings: 200, step: 20, color: "#ff6666" },
   { name:"sweets", jsVariable: "sweets", timeFrame: "weekly", servings: 4, step: 1, color: "#993366" },
   { name:"nuts & legumes", jsVariable: "nutsSeedsLegumes", timeFrame: "weekly", servings: 4, step: 1, color: "#006699" },
   { name:"alcohol", jsVariable: "alcohol", timeFrame: "weekly", servings: 4, step: 1, color: "#ff6666" }
@@ -74,22 +74,23 @@ function saveToday(ev) {
   }
   else {
     today[ev.target.counts] = ev.target.current;
-    localStorage.setItem("today", JSON.stringify(today));
   }
+  localStorage.setItem("today", JSON.stringify(today));
 }
 
 function saveWeek(ev) {
   const freshStart = {nutsSeedsLegumes: 0, sweets: 0, alcohol: 0, date: new Date()};
   let thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? freshStart;
-  if (false) {
+  if (weekHasPassed(thisWeek.date)) {
     storeOldWeek(thisWeek);
     document.querySelectorAll("#weekly-counters custom-counter").forEach(counter => counter.current = 0);
     thisWeek = freshStart;
   }
   else {
     thisWeek[ev.target.counts] = ev.target.current;
-    localStorage.setItem("thisWeek", JSON.stringify(thisWeek));
   }
+  localStorage.setItem("thisWeek", JSON.stringify(thisWeek));
+
 }
 
 function dayHasPassed(today) {
@@ -103,7 +104,7 @@ function dayHasPassed(today) {
 function weekHasPassed(startDate) {
   //Determines if at least seven  calendar days passed after startDate
   const checkDate = new Date(startDate);
-  const currentDate = new Date();
+  const currentDate = new Date("February 14, 2023");
   const passedMS = currentDate.getTime() - checkDate.getTime();
   console.log(`Start: ${checkDate.getTime()} Now: ${currentDate.getTime()} Diff: ${passedMS}`);
   if (passedMS < 518400000) { // Under 6 days

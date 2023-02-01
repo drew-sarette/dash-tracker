@@ -16,7 +16,10 @@ const defaultSettings = [
   let settings = JSON.parse(localStorage.getItem("settings"));
   if (!settings) {settings = defaultSettings};
   displayServingCounters(settings);
-  loadData("today", "thisWeek");
+  updateToday(null);
+  updateWeek(null);
+  loadData("today");
+  loadData("thisWeek");
 })();
 
 function displayServingCounters(settings) {
@@ -41,29 +44,26 @@ function createCounter(sObj) {
   icon.slot = "icon";
   counter.appendChild(icon);
   if (sObj.timeFrame === "daily") {
-    counter.addEventListener("click", ev => saveToday(ev));
+    counter.addEventListener("click", ev => updateToday(ev));
   }
   else {
-    counter.addEventListener("click", ev => saveWeek(ev));
+    counter.addEventListener("click", ev => updateWeek(ev));
   }
 
   return counter;
 }
 
-function loadData(...storedItems) {
-  // For each item retrieved from localStorage, update the current property/attribute of the corresponding custom-counter.
-  for (const item of storedItems) {
-    const data = JSON.parse(localStorage.getItem(item));
+function loadData(timeFrame) {
+    const data = JSON.parse(localStorage.getItem(timeFrame));
     if (data) {
     for (const key in data) {
       if (key === "date") { break; }
       document.getElementById(key).current = data[key];
     }
   }
-  }
 }
 
-function saveToday(ev) {
+function updateToday(ev) {
   // Save user input to today object in localstorage, or store old day and start new day if day has changed
   const freshStart = {grains: 0, fruits: 0, vegetables: 0, meat: 0, dairy: 0, fatsOils: 0, sodium: 0, caffeine: 0, date: new Date()};
   let today = JSON.parse(localStorage.getItem("today")) ?? freshStart;
@@ -73,12 +73,14 @@ function saveToday(ev) {
     today = freshStart;
   }
   else {
-    today[ev.target.counts] = ev.target.current;
+    if (ev) {
+      today[ev.target.counts] = ev.target.current;
+    } 
   }
   localStorage.setItem("today", JSON.stringify(today));
 }
 
-function saveWeek(ev) {
+function updateWeek(ev) {
   const freshStart = {nutsSeedsLegumes: 0, sweets: 0, alcohol: 0, date: new Date()};
   let thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? freshStart;
   if (weekHasPassed(thisWeek.date)) {
@@ -87,7 +89,9 @@ function saveWeek(ev) {
     thisWeek = freshStart;
   }
   else {
-    thisWeek[ev.target.counts] = ev.target.current;
+    if (ev) {
+      thisWeek[ev.target.counts] = ev.target.current;
+    }
   }
   localStorage.setItem("thisWeek", JSON.stringify(thisWeek));
 

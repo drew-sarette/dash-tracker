@@ -1,7 +1,7 @@
 /* 
 This custom element will be a block element that counts something (named in the "counts" attribute), by incrementing or decrementing the current value (the "current" attr.) by a specified step value ("step" attr.). 
 The user must add event listeners and callbacks for the increment and decrement buttons. Progress is calculated and displayed in the color named in the "color" attr. The user should also provide an icon for the icon slot, and set the max and counts attributes.
-*/
+The styles depend accessing variables from a /css/base-style.css file*/
 
 const template = document.createElement("template");
 template.innerHTML = `

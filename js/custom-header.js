@@ -1,12 +1,13 @@
 const headerTemplate = document.createElement("template");
 headerTemplate.innerHTML = `
     <style>
-        @import "/css/base-style.css";
+        @import "../css/base-style.css";
         
         .flex-container {
             display: flex;
             justify-content: space-between;
         }
+
         h1,.menu-button {
             margin: 8px 0px;
         }

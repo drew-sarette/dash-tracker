@@ -8,8 +8,12 @@ export const datesRepo = {
         if (Array.isArray(date) && date.length === 7) { 
             return date.slice(0, 3);
         }
+        else if (Object.prototype.toString.call(date) === '[object Date]'){
+            const arr = this.fullDateArray(date);
+            return arr.slice(0, 3);
+        }
         else {
-            console.log("Err: Input was not a valid date array.");
+            console.log(`Error: ${date} was not a date object or a 7-length date array`);
         }
     },
 
@@ -23,12 +27,11 @@ export const datesRepo = {
     },
 
     dateObjFromArray: function (dateArray) {
-        while (dateArray.length < 7 ) { dateArray.push(0) }
+        const copy = dateArray;
         // Absent month/day defaults to 1, not 0
-        if (dateArray[1] === 0) { dateArray[1]++ }
-        if (dateArray[2] === 0) { dateArray[2]++ }
-        dateArray[1]--;
-        return new Date(...dateArray);
+        copy[1]?? 1;
+        copy[2]?? 1;
+        return new Date(...copy);
     },
 
     addDaysToDate: function (dateArr, days) {
@@ -46,6 +49,7 @@ export const datesRepo = {
     },
 
     compareDateArrs: function (dateArr1, dateArr2) {
+        // Compares two dates, with or without time. dateArr = [YYYY, MM, DD] || [YYYY, MM, DD, h, m, s, ms]
         const [date1, date2] = [this.dateObjFromArray(dateArr1), this.dateObjFromArray(dateArr2)];
         const t = date2.getTime() - date1.getTime();
         if (t > 0) {

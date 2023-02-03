@@ -153,16 +153,18 @@ function updateToday(ev) {
   // Save user input to today object in localstorage, or store old day and start new day if day has changed
 
   const freshStart = {
-    grains: 0,
-    fruits: 0,
-    vegetables: 0,
-    meat: 0,
-    dairy: 0,
-    fatsOils: 0,
-    sodium: 0,
-    caffeine: 0,
+    date: datesRepo.justDate(new Date()),
+    data: {
+      grains: 0,
+      fruits: 0,
+      vegetables: 0,
+      meat: 0,
+      dairy: 0,
+      fatsOils: 0,
+      sodium: 0,
+      caffeine: 0 
+    }
   };
-  freshStart.date = datesRepo.justDate(datesRepo.fullDateArray(new Date()));
   let today = JSON.parse(localStorage.getItem("today")) ?? freshStart;
   if (dayHasPassed(today.date)) {
     storeOldDay(today);
@@ -172,7 +174,7 @@ function updateToday(ev) {
     today = freshStart;
   } else {
     if (ev) {
-      today[ev.target.counts] = ev.target.current;
+      today.data[ev.target.counts] = ev.target.current;
     }
   }
   localStorage.setItem("today", JSON.stringify(today));
@@ -202,11 +204,9 @@ function updateWeek(ev) {
 
 function dayHasPassed(checkDate) {
   //return true if current date is after checkDate
-  const todayArr = datesRepo.justDate(datesRepo.fullDateArray(new Date()));
-  checkDate = datesRepo.justDate(datesRepo.fullDateArray(new Date(checkDate))); // Needed to format bad date, remove later
+  const todayArr = datesRepo.justDate(new Date());
   const result = datesRepo.compareDateArrs(checkDate, todayArr);
-  console.log(todayArr, checkDate, result);
-  return result === 1; //
+  return (result === 1); 
 }
 
 function weekHasPassed(startDate) {
@@ -243,6 +243,18 @@ function storeOldDay(oldDay) {
   weeks.unshift(createNewWeek(oldDay));
   
   localStorage.setItem("weeks", JSON.stringify(weeks));
+}
+
+function createNewWeek(oldDay) {
+  const newWeek = {
+    date: oldDay.date,
+    days: [oldDay],
+    data: null
+  };
+  for (let i = 1; i<6; i++){
+    newWeek.days.push({ date: datesRepo.addDaysToDate(oldDay.date, i), data: null });
+  }
+  console.log(newWeek);
 }
 
 function storeOldWeek(oldWeek) {

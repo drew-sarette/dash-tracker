@@ -80,7 +80,7 @@ class CustomCounter extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["counts", "step", "current", "max", "color", "name"];
+    return ["counts", "step", "current", "max", "color", "name", "timeFrame"];
   }
 
   //Sync properties and attributes
@@ -119,6 +119,12 @@ class CustomCounter extends HTMLElement {
   }
   set name(val) {
     this.setAttribute("name", val);
+  }
+  get timeFrame() {
+    return this.getAttribute("timeFrame");
+  }
+  set timeFrame(val) {
+    this.setAttribute("timeFrame", val);
   }
 
   connectedCallback() {

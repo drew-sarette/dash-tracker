@@ -12,8 +12,12 @@ export const datesRepo = {
             const arr = this.fullDateArray(date);
             return arr.slice(0, 3);
         }
+        else if (typeof date === "undefined" || date === null) {
+            const arr = this.fullDateArray(new Date());
+            return arr.slice(0, 3);
+        }
         else {
-            console.log(`Error: ${date} was not a date object or a 7-length date array`);
+            console.log(`Error: ${date} is not a date object, null, undefined, or a properly formatted date array.`);
         }
     },
 

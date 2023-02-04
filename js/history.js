@@ -1,3 +1,5 @@
+import { datesRepo } from "./dates-repo.js";
+console.log(datesRepo.justDate(new Date()));
 const mainContent = document.querySelector("main");
 let days = JSON.parse(localStorage.getItem("days"));
 let weeksWithDays = JSON.parse(localStorage.getItem("weeks"));

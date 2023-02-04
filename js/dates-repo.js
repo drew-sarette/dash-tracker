@@ -29,8 +29,8 @@ export const datesRepo = {
     dateObjFromArray: function (dateArray) {
         const copy = dateArray;
         // Absent month/day defaults to 1, not 0
-        copy[1]?? 1;
-        copy[2]?? 1;
+        copy[1] = copy[1] ? copy[1] - 1 : 0;
+        if (!copy[2] || copy[2] === 0) {copy[2] = 1}
         return new Date(...copy);
     },
 

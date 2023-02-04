@@ -20,8 +20,7 @@ template.innerHTML = `
       button {
         filter: grayscale(30%);
         background: transparent;
-        // border: none; needed on github pages because it does not get imported from base-style
-        z-index: 1; // need this to get decrement button to be clickable. Why?
+        z-index: 1;
       }
       
       div.progress {

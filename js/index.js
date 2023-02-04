@@ -97,10 +97,7 @@ import { datesRepo } from "./dates-repo.js";
     settings = defaultSettings;
   }
   displayServingCounters(settings);
-  updateToday(null);
-  updateWeek(null);
-  loadData("today");
-  loadData("thisWeek");
+  loadData();
 })();
 
 function displayServingCounters(settings) {
@@ -128,32 +125,64 @@ function createCounter(sObj) {
   icon.src = `img/${sObj.jsVariable}.png`;
   icon.slot = "icon";
   counter.appendChild(icon);
-  if (sObj.timeFrame === "daily") {
-    counter.addEventListener("click", (ev) => updateToday(ev));
-  } else {
-    counter.addEventListener("click", (ev) => updateWeek(ev));
-  }
-
+  counter.addEventListener("click", (ev) => updateCounts(ev));
   return counter;
 }
 
-function loadData(timeFrame) {
-  const data = JSON.parse(localStorage.getItem(timeFrame));
-  if (data) {
-    for (const key in data) {
-      if (key === "date") {
-        break;
-      }
-      document.getElementById(key).current = data[key];
-    }
+function loadData() {
+  let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
+  let weeks = JSON.parse(localStorage.getItem("weeks")) ?? [createNewWeek(today)];
+  if (dayHasPassed(today.date)) { storeOldDay(today) }
+  if (weekHasPassed(weeks[0])) { weeks.unshift(createNewWeek(today)) }
+  const currentDate = datesRepo.justDate(new Date());
+  const currentDay = weeks[0].days.find(day => datesRepo.compareDateArrs(day.date, currentDate) === 0);
+  const dayData = currentDay.data;
+  const weekData = weeks[0].data;
+  const allData = {...dayData, ...weekData};
+  for (const key in allData) {
+    document.getElementById(key).current = allData[key];
   }
+  localStorage.setItem("today", JSON.stringify(today));
+  localStorage.setItem("weeks", JSON.stringify(weeks));
 }
 
-function updateToday(ev) {
-  // Save user input to today object in localstorage, or store old day and start new day if day has changed
+function updateCounts(ev) {
+  // Check if today is present in Weeks, create new week starting today if not.
+  let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
+  let weeks = JSON.parse(localStorage.getItem("weeks")) ?? [createNewWeek(today)];
+  if (dayHasPassed(today.date)) {
+    today = createNewDay();
+    if (weeks[0].days.some(d => datesRepo.compareDateArrs(today.date, d.date)) === false) {
+      weeks.unshift(createNewWeek(today))
+      document.querySelectorAll("#weekly-counters custom-counter").forEach((counter) => (counter.current = 0));
+    }
+    document.querySelectorAll("#daily-counters custom-counter").forEach((counter) => (counter.current = 0));
+    alert("Stored old data and reset counters for today.");
+    return;
+  }
+  else {
+    if (!ev) { return }
+    if (ev.target.timeFrame = "daily"){
+      today.data[ev.target.counts] = ev.target.current;
+      weeks[0].days.forEach( d => { 
+        if (datesRepo.compareDateArrs(d.date, today.date) === 0 ) {
+          d = today;
+        }
+      })
+    }
+    if (ev.target.timeFrame = "weekly"){
+      weeks[0].data[ev.target.counts] = ev.target.current;
+    }
+    
+  }
+  localStorage.setItem("today", JSON.stringify(today));
+  localStorage.setItem("weeks", JSON.stringify(weeks));
+}
 
-  const freshStart = {
-    date: datesRepo.justDate(new Date()),
+function createNewDay(date) {
+  date ??= datesRepo.justDate(new Date());
+  return {
+    date: date,
     data: {
       grains: 0,
       fruits: 0,
@@ -165,104 +194,18 @@ function updateToday(ev) {
       caffeine: 0 
     }
   };
-  let today = JSON.parse(localStorage.getItem("today")) ?? freshStart;
-  if (dayHasPassed(today.date)) {
-    storeOldDay(today);
-    document
-      .querySelectorAll("#daily-counters custom-counter")
-      .forEach((counter) => (counter.current = 0));
-    today = freshStart;
-  } else {
-    if (ev) {
-      today.data[ev.target.counts] = ev.target.current;
-    }
-  }
-  localStorage.setItem("today", JSON.stringify(today));
+
 }
 
-function updateWeek(ev) {
-  const freshStart = {
-    nutsSeedsLegumes: 0,
-    sweets: 0,
-    alcohol: 0,
-    date: new Date(),
-  };
-  let thisWeek = JSON.parse(localStorage.getItem("thisWeek")) ?? freshStart;
-  if (weekHasPassed(thisWeek.date)) {
-    storeOldWeek(thisWeek);
-    document
-      .querySelectorAll("#weekly-counters custom-counter")
-      .forEach((counter) => (counter.current = 0));
-    thisWeek = freshStart;
-  } else {
-    if (ev) {
-      thisWeek[ev.target.counts] = ev.target.current;
-    }
-  }
-  localStorage.setItem("thisWeek", JSON.stringify(thisWeek));
-}
-
-function dayHasPassed(checkDate) {
-  //return true if current date is after checkDate
-  const todayArr = datesRepo.justDate(new Date());
-  const result = datesRepo.compareDateArrs(checkDate, todayArr);
-  return (result === 1); 
-}
-
-function weekHasPassed(startDate) {
-  //Determines if at least seven  calendar days passed after startDate
-  const checkDate = new Date(startDate);
-  const currentDate = new Date("February 14, 2023");
-  const passedMS = currentDate.getTime() - checkDate.getTime();
-  console.log(
-    `Start: ${checkDate.getTime()} Now: ${currentDate.getTime()} Diff: ${passedMS}`
-  );
-  if (passedMS < 518400000) {
-    // Under 6 days
-    return false;
-  } else if (passedMS < 604800000 && today.getDay() === checkDate.getDay()) {
-    // Between 6 and 7 24h days, but the day of week is the same
-    return true;
-  } else {
-    return true;
-  }
-}
-
-function storeOldDay(oldDay) {
-  // Add old day to the localstorage days item,
-  let weeks = JSON.parse(localStorage.getItem("weeks"));
-  if (weeks) {
-    for (const d in weeks[0].days) {
-      if (datesRepo.compareDateArrs(d.date, oldDay.date) === 0) {
-        d.data = oldDay.data;
-        localStorage.setItem("weeks", JSON.stringify(weeks));
-        return;
-      }
-    }
-  }
-  weeks.unshift(createNewWeek(oldDay));
-  
-  localStorage.setItem("weeks", JSON.stringify(weeks));
-}
-
-function createNewWeek(oldDay) {
+function createNewWeek(startDay) {
+  //Creates a new week object given the first day object
   const newWeek = {
-    date: oldDay.date,
-    days: [oldDay],
-    data: null
+    date: startDay.date,
+    days: [startDay],
+    data: {}
   };
   for (let i = 1; i<6; i++){
-    newWeek.days.push({ date: datesRepo.addDaysToDate(oldDay.date, i), data: null });
+    newWeek.days.push({ date: datesRepo.addDaysToDate(startDay.date, i), data: {} });
   }
-  console.log(newWeek);
-}
-
-function storeOldWeek(oldWeek) {
-  let weeks = JSON.parse(localStorage.getItem("weeks"));
-  if (weeks) {
-    weeks.push(oldWeek);
-  } else {
-    weeks = [oldWeek];
-  }
-  localStorage.setItem("weeks", JSON.stringify(weeks));
+  return newWeek;
 }

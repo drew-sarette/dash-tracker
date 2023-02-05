@@ -1,45 +1,35 @@
 import { datesRepo } from "./dates-repo.js";
-console.log(datesRepo.justDate(new Date()));
+import { getSettings } from "./get-settings.js";
+console.log(getSettings());
 const mainContent = document.querySelector("main");
-let days = JSON.parse(localStorage.getItem("days"));
-let weeksWithDays = JSON.parse(localStorage.getItem("weeks"));
-if (days && weeksWithDays) {
-  
-  weeksWithDays.sort(mostRecentFirst);
-  days.sort(mostRecentFirst);
-  let weekNum = weeksWithDays.length;
-  
-  weeksWithDays.forEach(w => {
-    w.number = weekNum;
-    weekNum--;
-    w.days = [{ dayNo: 1, date: null, data: null },
-    { dayNo: 2, date: null, data: null },
-    { dayNo: 3, date: null, data: null },
-    { dayNo: 4, date: null, data: null },
-    { dayNo: 5, date: null, data: null },
-    { dayNo: 6, date: null, data: null },
-    { dayNo: 7, date: null, data: null }];
-    
-    w.days.forEach(wd => {
-      wd.date = new Date(w.date).getTime() + (wd.dayNo - 1) * 24 * 60 * 60 * 1000;
-      wd.date = new Date(wd.date);
-      wd.date.setHours(0,0,0,0);
-      wd.data = days.find(d => {
-        const t = new Date(d.date);
-        t.setHours(0,0,0,0);
-        return (t.getTime()  === wd.date.getTime());
-      });
-    });
-  });
+let weeks = JSON.parse(localStorage.getItem("weeks"));
+if (weeks) {
+  weeks.forEach(w => {
+    const weekComponent = createWeekComponent(w);
+    mainContent.appendChild(weekComponent);
+  })
 }
 else {
   mainContent.textContent = "No data found";
 }
-console.log(weeksWithDays);
 
-function mostRecentFirst(a, b) {
-  // sorts biggest (most recent) values first
-  let [dateA, dateB] = [new Date(a.date).getTime(), new Date(b.date).getTime()];
-  return dateB - dateA;
+function createWeekComponent(w) {
+  const h3 = document.createElement("h3");
+  h3.textContent = `Week of ${w.date[1]}-${w.date[2]}-${w.date[0]}`;
+  h3.slot = "heading";
+  const weekData = [];
+  for (const key in w.data) {weekData.push(makeDataItem(key, w.data))}
+  const dayComponents = [];
+  w.days.forEach(d => dayComponents.push(createDayComponent(d)));
+  const weekComponent = document.createElement("week-component");
+  weekComponent.append(h3,...weekData, ...dayComponents)
+  return weekComponent;
+}
+function makeDataItem(item) {
+  const p = document.createElement("p");
+  p.textContent = ``
 }
 
+function createDayComponent(d) {
+
+}

@@ -12,13 +12,16 @@ const defaultSettings = [
     { name:"alcohol", jsVariable: "alcohol", htmlID: "alcohol", timeFrame: "weekly", servings: 4, step: 1, color: "#ff6666" }
   ]
 
-export function getSettings(){
+function getSettings(){
     try {
         const foundSettings = JSON.parse(localStorage.getItem("settings"));
-        if (!foundSettings) throw new Error("Settings not found, using defaults.");
+        console.log(foundSettings);
+        if (!foundSettings){ throw new Error("Settings not found, using defaults.")};
         return foundSettings;
       } catch (error) {
         console.log(error.message);
         return defaultSettings;
       }
 }
+
+export { defaultSettings, getSettings }

@@ -15,7 +15,6 @@ const defaultSettings = [
 function getSettings(){
     try {
         const foundSettings = JSON.parse(localStorage.getItem("settings"));
-        console.log(foundSettings);
         if (!foundSettings){ throw new Error("Settings not found, using defaults.")};
         return foundSettings;
       } catch (error) {

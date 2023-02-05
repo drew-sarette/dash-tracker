@@ -1,6 +1,7 @@
 import { datesRepo } from "./dates-repo.js";
-import { getSettings } from "./get-settings.js";
-console.log(getSettings());
+import { defaultSettings, getSettings } from "./get-settings.js";
+
+
 const mainContent = document.querySelector("main");
 let weeks = JSON.parse(localStorage.getItem("weeks"));
 if (weeks) {
@@ -19,15 +20,20 @@ function createWeekComponent(w) {
   h3.slot = "heading";
   const weekData = [];
   for (const key in w.data) {weekData.push(makeDataItem(key, w.data))}
+  //start here next time
   const dayComponents = [];
   w.days.forEach(d => dayComponents.push(createDayComponent(d)));
   const weekComponent = document.createElement("week-component");
   weekComponent.append(h3,...weekData, ...dayComponents)
   return weekComponent;
 }
-function makeDataItem(item) {
+function makeDataItem(key, dataObj) {
+  const s = getSettings();
+  const si = s.find( item => item.jsVariable === key);
   const p = document.createElement("p");
-  p.textContent = ``
+  p.textContent = `${si.name}: ${dataObj[key]} of ${si.servings}`;
+  p.slot = "week-data";
+  return p;
 }
 
 function createDayComponent(d) {

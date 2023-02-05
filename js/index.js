@@ -1,105 +1,10 @@
 import { datesRepo } from "./dates-repo.js";
 import { defaultSettings, getSettings } from "./get-settings.js";
 
-(function () {
-  // const defaultSettings = [
-  //   {
-  //     name: "grains",
-  //     jsVariable: "grains",
-  //     timeFrame: "daily",
-  //     servings: 8,
-  //     step: 1,
-  //     color: "#996633",
-  //   },
-  //   {
-  //     name: "vegetables",
-  //     jsVariable: "vegetables",
-  //     htmlID: "vegetables",
-  //     timeFrame: "daily",
-  //     servings: 5,
-  //     step: 1,
-  //     color: "#00cc00",
-  //   },
-  //   {
-  //     name: "fruits",
-  //     jsVariable: "fruits",
-  //     timeFrame: "daily",
-  //     servings: 5,
-  //     step: 1,
-  //     color: "#ffff00",
-  //   },
-  //   {
-  //     name: "meat",
-  //     jsVariable: "meat",
-  //     timeFrame: "daily",
-  //     servings: 6,
-  //     step: 1,
-  //     color: "#cc0000",
-  //   },
-  //   {
-  //     name: "dairy",
-  //     jsVariable: "dairy",
-  //     timeFrame: "daily",
-  //     servings: 3,
-  //     step: 1,
-  //     color: "#ffffcc",
-  //   },
-  //   {
-  //     name: "fats & oils",
-  //     jsVariable: "fatsOils",
-  //     timeFrame: "daily",
-  //     servings: 3,
-  //     step: 1,
-  //     color: "#ff66ff",
-  //   },
-  //   {
-  //     name: "sodium (mg)",
-  //     jsVariable: "sodium",
-  //     timeFrame: "daily",
-  //     servings: 2300,
-  //     step: 100,
-  //     color: "#00ffff",
-  //   },
-  //   {
-  //     name: "caffeine (mg)",
-  //     jsVariable: "caffeine",
-  //     timeFrame: "daily",
-  //     servings: 200,
-  //     step: 20,
-  //     color: "#ff6666",
-  //   },
-  //   {
-  //     name: "sweets",
-  //     jsVariable: "sweets",
-  //     timeFrame: "weekly",
-  //     servings: 4,
-  //     step: 1,
-  //     color: "#993366",
-  //   },
-  //   {
-  //     name: "nuts & legumes",
-  //     jsVariable: "nutsSeedsLegumes",
-  //     timeFrame: "weekly",
-  //     servings: 4,
-  //     step: 1,
-  //     color: "#006699",
-  //   },
-  //   {
-  //     name: "alcohol",
-  //     jsVariable: "alcohol",
-  //     timeFrame: "weekly",
-  //     servings: 4,
-  //     step: 1,
-  //     color: "#ff6666",
-  //   },
-  // ];
-  // let settings = JSON.parse(localStorage.getItem("settings"));
-  // if (!settings) {
-  //   settings = defaultSettings;
-  // }
-  displayServingCounters(getSettings());
-  loadData();
-})();
+
+displayServingCounters(getSettings());
+loadData();
+
 
 function displayServingCounters(settings) {
   settings = settings.filter((s) => s.servings != 0);

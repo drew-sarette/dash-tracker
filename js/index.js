@@ -1,23 +1,12 @@
 import { datesRepo } from "./dates-repo.js";
-import { defaultSettings, getSettings } from "./get-settings.js";
+import { settingsRepo } from "./settings-repo.js";
 
+const dailyCounters = settingsRepo.getDailySettings().map(createCounter);
+const weeklyCounters = settingsRepo.getWeeklySettings().map(createCounter);
+document.getElementById("daily-counters").append(...dailyCounters);
+document.getElementById("weekly-counters").append(...weeklyCounters);
 
-displayServingCounters(getSettings());
 loadData();
-
-
-function displayServingCounters(settings) {
-  settings = settings.filter((s) => s.servings != 0);
-  const dailyCounters = settings
-    .filter((s) => s.timeFrame === "daily")
-    .map(createCounter);
-  document.getElementById("daily-counters").append(...dailyCounters);
-
-  const weeklyCounters = settings
-    .filter((s) => s.timeFrame === "weekly")
-    .map(createCounter);
-  document.getElementById("weekly-counters").append(...weeklyCounters);
-}
 
 function createCounter(sObj) {
   const counter = document.createElement("custom-counter");
@@ -120,38 +109,28 @@ function updateCounts(ev) {
 
 function createNewDay(date) {
   date ??= datesRepo.justDate();
+  const data = {};
+  settingsRepo.getDailySettings().forEach( s => data[s.jsVariable] = 0 );
   return {
     date: date,
-    data: {
-      grains: 0,
-      fruits: 0,
-      vegetables: 0,
-      meat: 0,
-      dairy: 0,
-      fatsOils: 0,
-      sodium: 0,
-      caffeine: 0 
-    }
+    data: data
   };
 }
 
 function createNewWeek(startDay) {
   //Creates a new week object given the first day object
   const days = [];
+  const data = {};
+  settingsRepo.getWeeklySettings().forEach( s => data[s.jsVariable] = 0 );
   const startDate = startDay.date;
   for (let i = 0; i<7; i++){
     const nextDate = datesRepo.addDaysToDate(startDate, i)
     days.push(createNewDay(nextDate));
   }
-  
   const newWeek = {
     date: startDay.date,
     days: days,
-    data: {
-      sweets: 0,
-      nutsSeedsLegumes: 0,
-      alcohol: 0
-    }
+    data: data
   };
   return newWeek;
 }

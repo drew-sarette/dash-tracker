@@ -1,11 +1,10 @@
-import { getSettings, defaultSettings } from "./get-settings.js";
-console.log(getSettings());
-displaySettings(getSettings());
+import { settingsRepo } from "./settings-repo.js";
 document.getElementById("save-settings").addEventListener("click", saveSettings); 
+document.getElementById("daily-settings").append(...createInputs(settingsRepo.getDailySettigs()));
+document.getElementById("weekly-settings").append(...createInputs(settingsRepo.getWeeklySettigs()));
 
-
-
-function displaySettings(settings) {
+function createInputs(settings) {
+  const inputs = [];
   settings.forEach(sObj => {
     const div = document.createElement("div");
     div.classList.add("form-field-container");
@@ -24,12 +23,7 @@ function displaySettings(settings) {
       <input type="color" name="" id="${sObj.htmlID}-color" value="${sObj.color}"/>
     </div>
     `;
-    if (sObj.timeFrame === "daily") {
-      document.getElementById("daily-settings").appendChild(div);
-    }
-    else {
-      document.getElementById("weekly-settings").appendChild(div);
-    }
+    inputs.push(div)
   });
 }
 // Save the number of servings currently in the form to localStorage

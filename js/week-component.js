@@ -3,8 +3,7 @@ template.innerHTML = `
     <style>
       @import "/css/base-style.css";
       :host {
-        display: block;
-        
+        display: block;  
         border: var(--border-size) solid var(--main-text-color);
         border-radius: var(--border-radius);
       }

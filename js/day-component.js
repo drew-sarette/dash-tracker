@@ -13,7 +13,13 @@ template2.innerHTML = `
       display: flex;
       gap: .1rem;
       flex-wrap: wrap;
-      justify-content: space-around;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    
+    .flex-column {
+      flex-direction: column;
+      width: max-content;
     }
 
     ::slotted(h4) {
@@ -22,9 +28,15 @@ template2.innerHTML = `
       margin: 0;
     }
 
-    ::slotted(img) {
-      width: 16px;
-      height: 16px;
+    ::slotted(div) {
+      width: 1.2rem;
+      overflow: hidden;
+      height: 1.2rem;
+      display: flex;
+    }
+
+    .expanded {
+      display: none !important;
     }
 
   </style>
@@ -41,6 +53,10 @@ class DayComponent extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: "closed"} );
     const clone = template2.content.cloneNode(true);
     shadowRoot.appendChild(clone);
+    shadowRoot.addEventListener("click",  e => {
+      const slot = shadowRoot.querySelector("div slot");
+      slot.assignedNodes().map( n => n.classList.toggle("expanded"));
+    });
   }
 }
 customElements.define("day-component", DayComponent);

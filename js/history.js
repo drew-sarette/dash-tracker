@@ -20,13 +20,13 @@ function createWeekComponent(w) {
   h3.slot = "heading";
   const weekData = [];
   for (const key in w.data) {weekData.push(makeDataItem(key, w.data))}
-  //start here next time
   const dayComponents = [];
   w.days.forEach(d => dayComponents.push(createDayComponent(d)));
   const weekComponent = document.createElement("week-component");
   weekComponent.append(h3,...weekData, ...dayComponents)
   return weekComponent;
 }
+
 function makeDataItem(key, dataObj) {
   const s = settingsRepo.getSettings();
   const si = s.find( item => item.jsVariable === key);
@@ -37,21 +37,21 @@ function makeDataItem(key, dataObj) {
 }
 
 function createDayComponent(d) {
-  const dayComponent = document.createElement("day-component");
+  const [dayComponent, h4, fgs] = [document.createElement("day-component"), document.createElement("h4"), []];
   dayComponent.slot = "days";
-  const h4 = document.createElement("h4");
-  h4.textContent = `${d.date[1]}-${d.date[2]}`;
   h4.slot = "day-date";
-  dayComponent.appendChild(h4);
+  h4.textContent = `${d.date[1]}-${d.date[2]}`;
   for (const foodGroup in d.data) {
-    const fgDisplay = document.createElement("img");
-    fgDisplay.src = `/img/${foodGroup}.png`;
     const setting = settingsRepo.findSetting(foodGroup);
+    const [icon, info, container] = [document.createElement("img"), `${setting.name}: ${d.data[foodGroup]} of ${setting.servings}`, document.createElement("div")];
+    icon.src = `/img/${foodGroup}.png`;
     if (Math.abs(d.data[foodGroup] - setting.servings) <= 1) {
-      fgDisplay.style.backgroundColor = setting.color;
+      icon.style.backgroundColor = setting.color;
     }
-    fgDisplay.slot = "day-data";
-    dayComponent.appendChild(fgDisplay);
+    container.slot = "day-data";
+    container.append(icon, info);
+    fgs.push(container);
   }
+  dayComponent.append(h4,...fgs);
   return dayComponent;
 }

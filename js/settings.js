@@ -1,7 +1,7 @@
 import { settingsRepo } from "./settings-repo.js";
 document.getElementById("save-settings").addEventListener("click", saveSettings); 
-document.getElementById("daily-settings").append(...createInputs(settingsRepo.getDailySettigs()));
-document.getElementById("weekly-settings").append(...createInputs(settingsRepo.getWeeklySettigs()));
+document.getElementById("daily-settings").append(...createInputs(settingsRepo.getDailySettings()));
+document.getElementById("weekly-settings").append(...createInputs(settingsRepo.getWeeklySettings()));
 
 function createInputs(settings) {
   const inputs = [];
@@ -25,10 +25,11 @@ function createInputs(settings) {
     `;
     inputs.push(div)
   });
+  return inputs;
 }
 // Save the number of servings currently in the form to localStorage
 function saveSettings() {
-  const modSettings = defaultSettings;
+  const modSettings = settingsRepo.defaultSettings;
   modSettings.forEach(sObj => {
     sObj.servings = document.getElementById(`${sObj.htmlID}-servings`).value;
     sObj.color = document.getElementById(`${sObj.htmlID}-color`).value; 

@@ -1,6 +1,7 @@
 import { datesRepo } from "./dates-repo.js";
 import { settingsRepo } from "./settings-repo.js";
 
+const settings = settingsRepo.getSettings();
 const mainContent = document.querySelector("main");
 let weeks = JSON.parse(localStorage.getItem("weeks"));
 if (weeks) {
@@ -36,8 +37,21 @@ function makeDataItem(key, dataObj) {
 }
 
 function createDayComponent(d) {
+  const dayComponent = document.createElement("day-component");
+  dayComponent.slot = "days";
   const h4 = document.createElement("h4");
-  h4.textContent = `${d.date[1]}-${d.date[2]}-${d.date[0]}`;
-  h4.slot = "day-date"
-  
+  h4.textContent = `${d.date[1]}-${d.date[2]}`;
+  h4.slot = "day-date";
+  dayComponent.appendChild(h4);
+  for (const foodGroup in d.data) {
+    const fgDisplay = document.createElement("img");
+    fgDisplay.src = `/img/${foodGroup}.png`;
+    const setting = settingsRepo.findSetting(foodGroup);
+    if (Math.abs(d.data[foodGroup] - setting.servings) <= 1) {
+      fgDisplay.style.backgroundColor = setting.color;
+    }
+    fgDisplay.slot = "day-data";
+    dayComponent.appendChild(fgDisplay);
+  }
+  return dayComponent;
 }

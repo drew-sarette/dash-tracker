@@ -29,7 +29,11 @@ const settingsRepo = {
   },
 
   getWeeklySettings: function () {
-    return this.getSettings().filter( s => s.timeFrame === "weekly")
+    return this.getSettings().filter( s => s.timeFrame === "weekly");
+  },
+
+  findSetting: function (name) {
+    return this.getSettings().find(s => s.jsVariable === name);
   }
 
 }

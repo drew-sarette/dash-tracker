@@ -20,7 +20,7 @@ const settingsRepo = {
         return foundSettings;
       } catch (error) {
         console.log(error.message);
-        return defaultSettings;
+        return this.defaultSettings;
       }
   },
 

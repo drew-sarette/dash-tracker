@@ -16,8 +16,6 @@ body {
   main {
     grid-area: main;
     justify-self: center;
-    min-width: 95%;
-
   }
   
   footer {

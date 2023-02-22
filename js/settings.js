@@ -36,4 +36,5 @@ function saveSettings() {
   })
  
   localStorage.setItem("settings", JSON.stringify(modSettings));
+  alert("Settings saved")
 }

@@ -6,6 +6,8 @@ headerTemplate.innerHTML = `
         .flex-container {
             display: flex;
             justify-content: space-between;
+            max-width: 45rem;
+            margin: 0 auto;
         }
 
         h1,.menu-button {

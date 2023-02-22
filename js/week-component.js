@@ -20,6 +20,7 @@ template.innerHTML = `
         gap: .5rem;
         justify-content: space-between;
       }
+
       ::slotted(p) {
         margin: .2rem;
       }

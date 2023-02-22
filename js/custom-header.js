@@ -40,7 +40,7 @@ headerTemplate.innerHTML = `
         nav {
             height: 0;
             overflow-y: hidden;
-            transition-property: max-height;
+            transition-property: height;
             transition-timing-function: cubic-bezier(0.36, 0.01, 0.71, 1.09);
             transition-duration: 0.3s;
         }

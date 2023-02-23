@@ -25,11 +25,11 @@ const settingsRepo = {
   },
 
   getDailySettings: function () {
-    return this.getSettings().filter( s => s.timeFrame === "daily");
+    return this.getSettings().filter( s => s.timeFrame === "daily" && s.servings != 0);
   },
 
   getWeeklySettings: function () {
-    return this.getSettings().filter( s => s.timeFrame === "weekly");
+    return this.getSettings().filter( s => s.timeFrame === "weekly" && s.servings != 0);
   },
 
   findSetting: function (name) {

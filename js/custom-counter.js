@@ -120,12 +120,6 @@ class CustomCounter extends HTMLElement {
   set name(val) {
     this.setAttribute("name", val);
   }
-  // get timeFrame() {
-  //   return this.getAttribute("timeFrame");
-  // }
-  // set timeFrame(val) {
-  //   this.setAttribute("timeFrame", val);
-  // }
 
   connectedCallback() {
     this.shadowRoot.querySelector(".increment").addEventListener("click", () => {
@@ -147,13 +141,11 @@ class CustomCounter extends HTMLElement {
   }
 
   updateDisplay() {
-    if ( this.current && this.max ){
-      const percentComplete = this.calculateProgress();
+    const percentComplete = this.calculateProgress();
       this.shadowRoot.querySelector(".percent-complete").style.cssText = `
         background-color: ${this.color};
         width: ${percentComplete}%;
       `;
-    }
     this.shadowRoot.querySelector("b.current-val").textContent = this.current;
     this.shadowRoot.querySelector("b.max-val").textContent = this.max;
     this.shadowRoot.querySelector("b.name").textContent = this.name;
@@ -170,7 +162,6 @@ class CustomCounter extends HTMLElement {
       return percentComplete;
     }
     else {
-      console.log("Error: percent complete = " + percentComplete);
       return 0;
     }
   }

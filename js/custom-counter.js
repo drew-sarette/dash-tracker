@@ -147,15 +147,18 @@ class CustomCounter extends HTMLElement {
   }
 
   updateDisplay() {
-    const percentComplete = this.calculateProgress();
-    this.shadowRoot.querySelector(".percent-complete").style.cssText = `
+    if ( this.current && this.max ){
+      const percentComplete = this.calculateProgress();
+      this.shadowRoot.querySelector(".percent-complete").style.cssText = `
         background-color: ${this.color};
         width: ${percentComplete}%;
       `;
+    }
     this.shadowRoot.querySelector("b.current-val").textContent = this.current;
     this.shadowRoot.querySelector("b.max-val").textContent = this.max;
     this.shadowRoot.querySelector("b.name").textContent = this.name;
     this.shadowRoot.querySelector(".progress").backgroundColor = this.color;
+    
   }
 
   calculateProgress() {

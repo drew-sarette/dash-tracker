@@ -110,7 +110,7 @@ function updateCounts(ev) {
 function createNewDay(date) {
   date ??= datesRepo.justDate();
   const data = {};
-  settingsRepo.getDailySettings().forEach( s => data[s.jsVariable] = 0 );
+  settingsRepo.getDailySettings().forEach( (s) => data[s.jsVariable] = 0 );
   return {
     date: date,
     data: data
@@ -119,18 +119,16 @@ function createNewDay(date) {
 
 function createNewWeek(startDay) {
   //Creates a new week object given the first day object
-  const days = [];
-  const data = {};
-  settingsRepo.getWeeklySettings().forEach( s => data[s.jsVariable] = 0 );
-  const startDate = startDay.date;
-  for (let i = 0; i<7; i++){
-    const nextDate = datesRepo.addDaysToDate(startDate, i)
-    days.push(createNewDay(nextDate));
-  }
   const newWeek = {
     date: startDay.date,
-    days: days,
-    data: data
+    days: [],
+    data: {}
   };
+  settingsRepo.getWeeklySettings().forEach( (s) => newWeek.data[s.jsVariable] = 0 );
+  for (let i = 0; i<7; i++){
+    const nextDate = datesRepo.addDaysToDate(newWeek.date, i)
+    newWeek.days.push(createNewDay(nextDate));
+  };
+  console.log(newWeek);
   return newWeek;
 }

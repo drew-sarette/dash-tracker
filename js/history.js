@@ -2,7 +2,10 @@ import { datesRepo } from "./dates-repo.js";
 import { settingsRepo } from "./settings-repo.js";
 
 const settings = settingsRepo.getSettings();
-const mainContent = document.querySelector("main");
+
+const historyDataContainer = document.getElementById("history-data");
+
+// Load and display history data
 let weeks = JSON.parse(localStorage.getItem("weeks"));
 let today = JSON.parse(localStorage.getItem("today"));
 if (today && weeks) {
@@ -11,10 +14,10 @@ if (today && weeks) {
   ).data = today.data;
   weeks.forEach((w) => {
     const weekComponent = createWeekComponent(w);
-    mainContent.appendChild(weekComponent);
+    historyDataContainer.appendChild(weekComponent);
   });
 } else {
-  mainContent.textContent = "No data found";
+  historyDataContainer.textContent = "No data found";
 }
 
 function createWeekComponent(w) {
@@ -68,3 +71,12 @@ function createDayComponent(d) {
   dayComponent.append(h4, ...fgs);
   return dayComponent;
 }
+
+//Clear History Function 
+document.getElementById("clear-history").addEventListener("click", () => {
+  if (confirm("Are you sure you want to delete all data?")){
+    localStorage.removeItem("weeks");
+    localStorage.removeItem("today");
+    location.reload();
+  }
+})

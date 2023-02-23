@@ -41,6 +41,11 @@ input {
 }
 
 /* || UTILITIES */
+.border {
+  border: var(--border-size) solid var(--main-text-color);
+  border-radius: var(--border-radius);
+}
+
 .flex-column-gap {
   display: flex;
   flex-direction: column;
@@ -57,6 +62,11 @@ input {
 
 .clickable:hover {
   font-size: larger;
+}
+
+.center-horizontal {
+  margin-left: 50%;
+  translate: -50%;
 }
 
 .visually-hidden {

@@ -5,7 +5,6 @@ const dailyCounters = settingsRepo.getDailySettings().map(createCounter);
 const weeklyCounters = settingsRepo.getWeeklySettings().map(createCounter);
 document.getElementById("daily-counters").append(...dailyCounters);
 document.getElementById("weekly-counters").append(...weeklyCounters);
-
 loadData();
 
 function createCounter(sObj) {
@@ -40,9 +39,9 @@ function loadData() {
   const dayData = today.data;
   const weekData = weeks[0].data;
   const allData = {...dayData, ...weekData};
-  for (const key in allData) {
-    document.getElementById(key).current = allData[key];
-  }
+  document.querySelectorAll("custom-counter").forEach( (counter) => {
+    counter.current = allData[counter.counts];
+  })
   localStorage.setItem("today", JSON.stringify(today));
   localStorage.setItem("weeks", JSON.stringify(weeks));
 }

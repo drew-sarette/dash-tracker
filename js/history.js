@@ -45,21 +45,17 @@ function makeDataItem(key, dataObj) {
 }
 
 function createDayComponent(d) {
-  const [dayComponent, h4, fgs] = [
-    document.createElement("day-component"),
-    document.createElement("h4"),
-    [],
-  ];
+  const dayComponent = document.createElement("day-component");
   dayComponent.slot = "days";
+  const h4 = document.createElement("h4");
   h4.slot = "day-date";
   h4.textContent = `${d.date[1]}-${d.date[2]}`;
+  const fgs = [];
   for (const foodGroup in d.data) {
     const setting = settingsRepo.findSetting(foodGroup);
-    const [icon, info, container] = [
-      document.createElement("img"),
-      `${setting.name}: ${d.data[foodGroup]} of ${setting.servings}`,
-      document.createElement("div"),
-    ];
+    const icon = document.createElement("img");
+    const info = `${setting.name}: ${d.data[foodGroup]} of ${setting.servings}`;
+    const container = document.createElement("div");
     icon.src = `/img/${foodGroup}.png`;
     if (Math.abs(d.data[foodGroup] - setting.servings) <= 1) {
       icon.style.backgroundColor = setting.color;

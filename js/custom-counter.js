@@ -120,12 +120,12 @@ class CustomCounter extends HTMLElement {
   set name(val) {
     this.setAttribute("name", val);
   }
-  get timeFrame() {
-    return this.getAttribute("timeFrame");
-  }
-  set timeFrame(val) {
-    this.setAttribute("timeFrame", val);
-  }
+  // get timeFrame() {
+  //   return this.getAttribute("timeFrame");
+  // }
+  // set timeFrame(val) {
+  //   this.setAttribute("timeFrame", val);
+  // }
 
   connectedCallback() {
     this.shadowRoot.querySelector(".increment").addEventListener("click", () => {

@@ -15,7 +15,6 @@ function createCounter(sObj) {
   counter.color = sObj.color;
   counter.name = sObj.name;
   counter.id = sObj.jsVariable;
-  counter.timeFrame = sObj.timeFrame;
   const icon = document.createElement("img");
   icon.src = `img/${sObj.jsVariable}.png`;
   icon.slot = "icon";

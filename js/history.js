@@ -54,18 +54,21 @@ function createDayComponent(d) {
   for (const foodGroup in d.data) {
     const setting = settingsRepo.findSetting(foodGroup);
     const icon = document.createElement("img");
-    const info = `${setting.name}: ${d.data[foodGroup]} of ${setting.servings}`;
-    const container = document.createElement("div");
     icon.src = `/img/${foodGroup}.png`;
+    icon.slot= "icon";
     if (Math.abs(d.data[foodGroup] - setting.servings) <= 1) {
       icon.style.backgroundColor = setting.color;
     }
-    container.slot = "day-data";
-    container.append(icon, info);
-    fgs.push(container);
+    const info = document.createElement("p");
+    info.textContent = `${setting.name}: ${d.data[foodGroup]} of ${setting.servings}`;
+    info.slot = "info";
+    const fgInfo = document.createElement("fg-info");
+    fgInfo.slot = "day-data";
+    fgInfo.append(icon, info);
+    fgs.push(fgInfo);
   }
-  dayComponent.append(h4, ...fgs);
-  return dayComponent;
+    dayComponent.append(h4, ...fgs);
+    return dayComponent;
 }
 
 //Clear History Function 

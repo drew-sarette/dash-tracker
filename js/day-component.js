@@ -1,5 +1,5 @@
-const template2 = document.createElement("template");
-template2.innerHTML = `
+const template3 = document.createElement("template");
+template3.innerHTML = `
   <style>
     @import "/css/base-style.css";
     :host {
@@ -15,6 +15,7 @@ template2.innerHTML = `
       flex-wrap: wrap;
       justify-content: flex-start;
       align-items: center;
+      max-width: fit-content;
     }
     
     .flex-column {
@@ -33,10 +34,8 @@ template2.innerHTML = `
       overflow: hidden;
       height: 1.2rem;
       display: flex;
-    }
-
-    .expanded {
-      display: none !important;
+      gap: 1em;
+      max-width: fit-content;
     }
 
   </style>
@@ -51,11 +50,13 @@ class DayComponent extends HTMLElement {
   constructor() {
     super();
     const shadowRoot = this.attachShadow({ mode: "closed"} );
-    const clone = template2.content.cloneNode(true);
+    const clone = template3.content.cloneNode(true);
     shadowRoot.appendChild(clone);
     shadowRoot.addEventListener("click",  e => {
       const slot = shadowRoot.querySelector("div slot");
-      slot.assignedNodes().map( n => n.classList.toggle("expanded"));
+      slot.assignedNodes().map( n => {
+        n.setAttribute("expanded", n.getAttribute("expanded") === "false");
+      });
     });
   }
 }

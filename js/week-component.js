@@ -3,15 +3,12 @@ template.innerHTML = `
     <style>
       @import "/css/base-style.css";
       :host {
-        display: block flex;
+        display: block;
         gap: .5rem;
         padding: .5rem;
         border: var(--border-size) solid var(--main-text-color);
         border-radius: var(--border-radius);
-      }
-      
-      .week-data-container {
-        min-width: fit-content;
+        margin-bottom: .5em;
       }
 
       .days-container {

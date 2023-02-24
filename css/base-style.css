@@ -76,10 +76,6 @@ input {
   width: 1px;
 }
 
-.expanded {
-  width: fit-content;
-}
-
 .display-none {
   display: none !important;
 }

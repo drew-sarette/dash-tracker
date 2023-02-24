@@ -8,34 +8,11 @@ template3.innerHTML = `
       border: var(--border-size) solid var(--main-text-color);
       border-radius: var(--border-radius);
     }
-
-    div {
-      display: flex;
-      gap: .1rem;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: center;
-      max-width: fit-content;
-    }
     
-    .flex-column {
-      flex-direction: column;
-      width: max-content;
-    }
-
     ::slotted(h4) {
       text-align: center;
       line-height: 1rem;
       margin: 0;
-    }
-
-    ::slotted(div) {
-      width: 1.2rem;
-      overflow: hidden;
-      height: 1.2rem;
-      display: flex;
-      gap: 1em;
-      max-width: fit-content;
     }
 
   </style>
@@ -54,7 +31,7 @@ class DayComponent extends HTMLElement {
     shadowRoot.appendChild(clone);
     shadowRoot.addEventListener("click",  e => {
       const slot = shadowRoot.querySelector("div slot");
-      slot.assignedNodes().map( n => {
+      const fgs = slot.assignedNodes().map( n => {
         n.setAttribute("expanded", n.getAttribute("expanded") === "false");
       });
     });

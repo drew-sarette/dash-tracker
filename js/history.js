@@ -3,7 +3,7 @@ import { settingsRepo } from "./settings-repo.js";
 
 const settings = settingsRepo.getSettings();
 
-const historyDataContainer = document.getElementById("history-data");
+const historyDatafgInfo = document.getElementById("history-data");
 
 // Load and display history data
 let weeks = JSON.parse(localStorage.getItem("weeks"));
@@ -14,10 +14,10 @@ if (today && weeks) {
   ).data = today.data;
   weeks.forEach((w) => {
     const weekComponent = createWeekComponent(w);
-    historyDataContainer.appendChild(weekComponent);
+    historyDatafgInfo.appendChild(weekComponent);
   });
 } else {
-  historyDataContainer.textContent = "No data found";
+  historyDatafgInfo.textContent = "No data found";
 }
 
 function createWeekComponent(w) {
@@ -55,20 +55,20 @@ function createDayComponent(d) {
     const setting = settingsRepo.findSetting(foodGroup);
     const icon = document.createElement("img");
     icon.src = `/img/${foodGroup}.png`;
-    icon.slot= "icon";
     if (Math.abs(d.data[foodGroup] - setting.servings) <= 1) {
       icon.style.backgroundColor = setting.color;
     }
     const info = document.createElement("p");
     info.textContent = `${setting.name}: ${d.data[foodGroup]} of ${setting.servings}`;
-    info.slot = "info";
+    [icon.slot, info.slot] = ["icon", "info"];
     const fgInfo = document.createElement("fg-info");
     fgInfo.slot = "day-data";
+    fgInfo.expanded = "false";
     fgInfo.append(icon, info);
     fgs.push(fgInfo);
   }
-    dayComponent.append(h4, ...fgs);
-    return dayComponent;
+  dayComponent.append(h4, ...fgs);
+  return dayComponent;
 }
 
 //Clear History Function 

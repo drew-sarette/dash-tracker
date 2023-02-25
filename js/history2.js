@@ -1,0 +1,61 @@
+import { datesRepo } from "./dates-repo.js";
+import { settingsRepo } from "./settings-repo.js";
+
+const settings = settingsRepo.getSettings();
+
+const historyDataArea = document.getElementById("history-data");
+
+// Load and display history data
+let weeks = JSON.parse(localStorage.getItem("weeks"));
+let today = JSON.parse(localStorage.getItem("today"));
+if (today && weeks) {
+  weeks[0].days.find(
+    (d) => datesRepo.compareDateArrs(d.date, today.date) === 0
+  ).data = today.data;
+  weeks.forEach((w) => {
+    const weekDisplay = createWeekDisplay(w);
+    historyDataArea.appendChild(weekDisplay);
+  });
+} else {
+  historyDataArea.textContent = "No data found";
+}
+
+function createWeekDisplay(w) {
+  const weekContainer = document.createElement("div");
+  weekContainer.classList.add("week-display");
+  const weekExpList = makeExpList(`Week of ${w.date[2]}-${w.date[1]}-${w.date[0]}`, w.data);
+  const daysContainer = document.createElement("div")
+  w.days.forEach(d => {
+    const dayExpList = makeExpList(`${d.date[2]}-${d.date[1]}-${d.date[0]}`, d.data)
+    daysContainer.appendChild(dayExpList);
+  })
+  weekContainer.append(weekExpList, daysContainer);
+  return weekContainer;
+}
+
+function makeExpList (infoString, listData) {
+    const expList = document.createElement("expandable-list");
+    const info = document.createElement("h4");
+    info.slot = "info";
+    info.textContent = infoString;
+    const lis = [];
+    for (const fg in listData) {
+        const li = makeLi(fg, listData[fg]);
+        lis.push(li);
+    }
+    expList.append(info, ...lis);
+    return expList;
+}
+
+function makeLi(fg, servingsCount) {
+    const setting = settingsRepo.findSetting(fg);
+    const li = document.createElement("li");
+    const icon = document.createElement("img");
+    const desc = document.createElement("p");
+    li.slot = "expandable";
+    icon.src = `img/${fg}.png`;
+    desc.textContent = `${setting.name}: ${servingsCount} of ${setting.servings}`;
+    li.append(icon, desc);
+    return li;
+  }
+  

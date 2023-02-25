@@ -69,6 +69,19 @@ input {
   translate: -50%;
 }
 
+.icon-small {
+  height: 1.2rem;
+  width: 1.2rem;
+}
+
+.inline {
+  display: inline;
+}
+
+.no-margin {
+  margin: none;
+}
+
 .visually-hidden {
   height: 1px;
   overflow: hidden;

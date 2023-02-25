@@ -8,9 +8,6 @@ expandable-list  {
     border-radius: var(--border-radius);
     padding: 1em;
 }
-.week-display > div {
-    display: flow-root;
-}
 
 .week-display > div > expandable-list {
     border: var(--border-size) solid var(--main-text-color);
@@ -19,9 +16,4 @@ expandable-list  {
 
 .icon-small {
     margin-right: .5ch;
-}
-
-li[slot="expandable"] {
-    display: flex;
-    align-items: center;
 }

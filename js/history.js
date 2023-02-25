@@ -58,4 +58,12 @@ function makeLi(fg, servingsCount) {
     li.append(icon, desc);
     return li;
   }
+
+  document.getElementById("clear-history").addEventListener("click", () => {
+    if (confirm("Are you sure you want to delete all stored data?")){
+      localStorage.removeItem("today");
+      localStorage.removeItem("weeks");
+    }
+    location.reload();
+  })
   

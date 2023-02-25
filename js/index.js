@@ -1,11 +1,20 @@
 import { datesRepo } from "./dates-repo.js";
 import { settingsRepo } from "./settings-repo.js";
 
+try {
+  localStorage.setItem("test", "");
+  localStorage.removeItem("test");
+}
+catch {
+  alert("LocalStorage is required for full functionality");
+}
+
 const dailyCounters = settingsRepo.getDailySettings().map(createCounter);
 const weeklyCounters = settingsRepo.getWeeklySettings().map(createCounter);
 document.getElementById("daily-counters").append(...dailyCounters);
 document.getElementById("weekly-counters").append(...weeklyCounters);
 loadData();
+
 
 function createCounter(sObj) {
   const counter = document.createElement("custom-counter");

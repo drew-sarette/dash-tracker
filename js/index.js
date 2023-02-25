@@ -9,12 +9,15 @@ catch {
   alert("LocalStorage is required for full functionality");
 }
 
+const settings = settingsRepo.getSettings();
+
+
+// DISPLAY SERVING COUNTERS
 const dailyCounters = settingsRepo.getDailySettings().map(createCounter);
 const weeklyCounters = settingsRepo.getWeeklySettings().map(createCounter);
 document.getElementById("daily-counters").append(...dailyCounters);
 document.getElementById("weekly-counters").append(...weeklyCounters);
 loadData();
-
 
 function createCounter(sObj) {
   const counter = document.createElement("custom-counter");
@@ -24,6 +27,7 @@ function createCounter(sObj) {
   counter.color = sObj.color;
   counter.name = sObj.name;
   counter.id = sObj.jsVariable;
+  counter.timeframe = sObj.timeFrame;
   const icon = document.createElement("img");
   icon.src = `img/${sObj.jsVariable}.png`;
   icon.slot = "icon";
@@ -32,6 +36,7 @@ function createCounter(sObj) {
   return counter;
 }
 
+// LOAD TODAY'S DATA
 function loadData() {
   let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
   let weeks = JSON.parse(localStorage.getItem("weeks")) ?? [createNewWeek(createNewDay())]; 
@@ -78,16 +83,7 @@ function resetWeekCounters() {
   document.querySelectorAll("#weekly-counters custom-counter").forEach((counter) => (counter.current = 0));
 }
 
-function saveDayinWeek0(day, week0) {
-  week0.days.forEach(d => {
-    if (datesRepo.compareDateArrs(d.date, day.date) === 0){
-      d = day;
-      return week0;
-    }
-  })
-  console.log(`Error saving data. day ${day.date} not found in current week ${week0.date}`);
-}
-
+// UPDATE TODAY'S DATA
 function updateCounts(ev) {
   // Check if today is present in Weeks, create new week starting today if not.
   let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
@@ -103,15 +99,25 @@ function updateCounts(ev) {
   }
   else {
     if (!ev) { return }
-    if (ev.target.timeFrame === "daily"){
+    if (ev.target.timeframe=== "daily"){
       today.data[ev.target.counts] = ev.target.current;
     }
-    if (ev.target.timeFrame === "weekly"){
+    if (ev.target.timeframe === "weekly"){
       weeks[0].data[ev.target.counts] = ev.target.current;
     }
   }
   localStorage.setItem("today", JSON.stringify(today));
   localStorage.setItem("weeks", JSON.stringify(weeks));
+}
+
+function saveDayinWeek0(day, week0) {
+  week0.days.forEach(d => {
+    if (datesRepo.compareDateArrs(d.date, day.date) === 0){
+      d = day;
+      return week0;
+    }
+  })
+  console.log(`Error saving data. day ${day.date} not found in current week ${week0.date}`);
 }
 
 function createNewDay(date) {

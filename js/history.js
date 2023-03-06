@@ -6,8 +6,8 @@ const settings = settingsRepo.getSettings();
 const historyDataArea = document.getElementById("history-data");
 
 // Load and display history data
-let weeks = JSON.parse(localStorage.getItem("weeks"));
-let today = JSON.parse(localStorage.getItem("today"));
+let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
+let weeks = JSON.parse(localStorage.getItem("weeks")) ?? [createNewWeek(createNewDay())]; 
 if (today && weeks) {
   const isWeekCurrent = weeks[0].days.some(d => datesRepo.compareDateArrs(d.date, datesRepo.justDate()) === 0);
   if (!isWeekCurrent) {
@@ -24,6 +24,13 @@ if (today && weeks) {
 } else {
   historyDataArea.textContent = "No data found";
 }
+if (weeks[0] === null) {
+  console.trace();
+  alert("Weeks[0] set to null. Check logs");
+  weeks.unshift();
+}
+localStorage.setItem("today", JSON.stringify(today));
+localStorage.setItem("weeks", JSON.stringify(weeks));
 
 function createWeekDisplay(w) {
   const weekContainer = document.createElement("div");

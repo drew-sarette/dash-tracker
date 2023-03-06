@@ -55,6 +55,11 @@ function loadData() {
   document.querySelectorAll("custom-counter").forEach( (counter) => {
     counter.current = allData[counter.counts];
   })
+  if (weeks[0] === null) {
+    console.trace();
+    alert("Weeks[0] set to null. Check logs");
+    weeks.unshift();
+  }
   localStorage.setItem("today", JSON.stringify(today));
   localStorage.setItem("weeks", JSON.stringify(weeks));
 }
@@ -106,6 +111,11 @@ function updateCounts(ev) {
       weeks[0].data[ev.target.counts] = ev.target.current;
     }
   }
+  if (weeks[0] === null) {
+    console.trace();
+    alert("Weeks[0] set to null. Check logs");
+    weeks.unshift();
+  }
   localStorage.setItem("today", JSON.stringify(today));
   localStorage.setItem("weeks", JSON.stringify(weeks));
 }
@@ -142,6 +152,5 @@ function createNewWeek(startDay) {
     const nextDate = datesRepo.addDaysToDate(newWeek.date, i)
     newWeek.days.push(createNewDay(nextDate));
   };
-  console.log(newWeek);
   return newWeek;
 }

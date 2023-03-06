@@ -9,8 +9,13 @@ const historyDataArea = document.getElementById("history-data");
 let weeks = JSON.parse(localStorage.getItem("weeks"));
 let today = JSON.parse(localStorage.getItem("today"));
 if (today && weeks) {
+  const isWeekCurrent = weeks[0].days.some(d => datesRepo.compareDateArrs(d.date, datesRepo.justDate()) === 0);
+  if (!isWeekCurrent) {
+    today = createNewDay();
+    weeks.unshift(createNewWeek(createNewDay(today.date)));
+  }
   weeks[0].days.find(
-    (d) => datesRepo.compareDateArrs(d.date, today.date) === 0
+    (d) => datesRepo.compareDateArrs(d.date, datesRepo.justDate()) === 0
   ).data = today.data;
   weeks.forEach((w) => {
     const weekDisplay = createWeekDisplay(w);
@@ -66,4 +71,29 @@ function makeLi(fg, servingsCount) {
     }
     location.reload();
   })
+
+function createNewDay(date) {
+  date ??= datesRepo.justDate();
+  const data = {};
+  settingsRepo.getDailySettings().forEach( (s) => data[s.jsVariable] = 0 );
+  return {
+    date: date,
+    data: data
+  };
+}
+
+function createNewWeek(startDay) {
+  //Creates a new week object given the first day object
+  const newWeek = {
+    date: startDay.date,
+    days: [],
+    data: {}
+  };
+  settingsRepo.getWeeklySettings().forEach( (s) => newWeek.data[s.jsVariable] = 0 );
+  for (let i = 0; i<7; i++){
+    const nextDate = datesRepo.addDaysToDate(newWeek.date, i)
+    newWeek.days.push(createNewDay(nextDate));
+  };
+  return newWeek;
+}
   

@@ -1,5 +1,5 @@
-import { datesRepo } from "./dates-repo.js";
-import { settingsRepo } from "./settings-repo.js";
+import datesRepo from "./dates-repo";
+import settingsRepo from "./settings-repo";
 
 const settings = settingsRepo.getSettings();
 

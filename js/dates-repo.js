@@ -1,4 +1,4 @@
-export const datesRepo = {
+const datesRepo = {
     
     fullDateArray: function (dateObj) {
         return [dateObj.getFullYear(), dateObj.getMonth() + 1 , dateObj.getDate(), dateObj.getHours(), dateObj.getMinutes(), dateObj.getSeconds(), dateObj.getMilliseconds()];
@@ -67,3 +67,5 @@ export const datesRepo = {
     }
     
 };
+
+export default datesRepo;

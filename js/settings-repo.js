@@ -38,4 +38,4 @@ const settingsRepo = {
 
 }
 
-export { settingsRepo }
+export default settingsRepo;

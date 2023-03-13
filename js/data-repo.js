@@ -1,14 +1,7 @@
 import datesRepo from "./dates-repo.js";
+import testDays from "./testDays.js";
+
 const dataRepo = {
-    getToday: function () {
-        const today = JSON.parse(localStorage.getItem("today"));
-        return today ? today : null;
-    },
-
-    saveToday: function (today) {
-        localStorage.setItem("today", JSON.stringify(today));
-    },
-
     getDays: function () {
         const days = JSON.parse(localStorage.getItem("days"));
         return days ? days : null;      
@@ -19,14 +12,18 @@ const dataRepo = {
     },
 
     getLastWeek: function () {
-        const days = this.getDays() ? this.getDays() : [];
+        let days = this.getDays() ? this.getDays() : [];
+        days = testDays.reverse();
+        const last7entries = days.slice(0, 7);
+        //startDate is the day six days ago
+        const startDate = datesRepo.addDaysToDate(datesRepo.justDate(), -5);
         const week = [];
-        const day1ofWeek = datesRepo.addDaysToDate(datesRepo.justDate, -7);
-        for (let i = 0; i < 7; i++) {
-            if (datesRepo.compareDateArrs(day1ofWeek, days[i].date) >= 0) {
-                week.push(days[i]);
+        last7entries.forEach(entry => {
+            if (datesRepo.compareDateArrs(startDate, entry.date) >= 0) {
+                week.push(entry);
             }
-        }
+        })
+        console.log(week);
         return week;
     },
 

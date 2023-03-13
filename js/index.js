@@ -13,8 +13,6 @@ catch {
 const settings = settingsRepo.getSettings();
 const dailySettings = settings.filter(s => s.timeFrame === "daily");
 const weeklySettings = settings.filter(s => s.timeFrame === "weekly");
-console.log(settings, dailySettings, weeklySettings);
-
 
 // DISPLAY SERVING COUNTERS
 const dailyCounters = dailySettings.map(createCounter);
@@ -43,15 +41,17 @@ function createCounter(sObj) {
 
 // LOAD TODAY'S DATA
 function loadDailyData() {
-  let today = dataRepo.getToday();
-  if (dayHasPassed(today.date)) {
-    resetDayCounters(today); 
-    today = createNewDay();
+  let days = dataRepo.getDays() ? dataRepo.getDays() : [createNewDay()];
+  if (dayHasPassed(days[0].date)) {
+    dailyCounters.forEach(counter => counter.current = 0);
+    days.unshift(createNewDay()); 
+    dataRepo.saveDays(days);
   }
-  document.querySelectorAll("custom-counter").forEach( (counter) => {
-    counter.current = allData[counter.counts];
+  dailyCounters.forEach( (counter) => {
+    counter.current = days[0].data[counter.counts];
   })
-  localStorage.setItem("today", JSON.stringify(today));
+  dataRepo.saveDays(days);
+  
 }
 
 

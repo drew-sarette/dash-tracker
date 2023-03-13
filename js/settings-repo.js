@@ -22,20 +22,7 @@ const settingsRepo = {
         console.log(error.message);
         return this.defaultSettings;
       }
-  },
-
-  getDailySettings: function () {
-    return this.getSettings().filter( s => s.timeFrame === "daily");
-  },
-
-  getWeeklySettings: function () {
-    return this.getSettings().filter( s => s.timeFrame === "weekly");
-  },
-
-  findSetting: function (name) {
-    return this.getSettings().find(s => s.jsVariable === name);
   }
-
 }
 
-export { settingsRepo }
+export default settingsRepo;

@@ -17,8 +17,8 @@ console.log(settings, dailySettings, weeklySettings);
 
 
 // DISPLAY SERVING COUNTERS
-const dailyCounters = settingsRepo.getDailySettings().map(createCounter);
-const weeklyCounters = settingsRepo.getWeeklySettings().map(createCounter);
+const dailyCounters = dailySettings.map(createCounter);
+const weeklyCounters = weeklySettings.map(createCounter);
 document.getElementById("daily-counters").append(...dailyCounters);
 document.getElementById("weekly-counters").append(...weeklyCounters);
 loadDailyData();
@@ -98,7 +98,7 @@ function updateCounts(ev) {
 function createNewDay(date) {
   date ??= datesRepo.justDate();
   const data = {};
-  settingsRepo.getDailySettings().forEach( (s) => data[s.jsVariable] = 0 );
+  dailySettings.forEach( (s) => data[s.jsVariable] = 0 );
   return {
     date: date,
     data: data
@@ -112,7 +112,7 @@ function createNewWeek(startDay) {
     days: [],
     data: {}
   };
-  settingsRepo.getWeeklySettings().forEach( (s) => newWeek.data[s.jsVariable] = 0 );
+  weeklySettings.forEach( (s) => newWeek.data[s.jsVariable] = 0 );
   for (let i = 0; i<7; i++){
     const nextDate = datesRepo.addDaysToDate(newWeek.date, i)
     newWeek.days.push(createNewDay(nextDate));

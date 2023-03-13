@@ -1,5 +1,6 @@
-import { datesRepo } from "./dates-repo.js";
-import { settingsRepo } from "./settings-repo.js";
+import settingsRepo from "./settings-repo.js";
+import dataRepo from "./data-repo.js";
+import datesRepo from "./dates-repo.js";
 
 try {
   localStorage.setItem("test", "");
@@ -10,6 +11,9 @@ catch {
 }
 
 const settings = settingsRepo.getSettings();
+const dailySettings = settings.filter(s => s.timeFrame === "daily");
+const weeklySettings = settings.filter(s => s.timeFrame === "weekly");
+console.log(settings, dailySettings, weeklySettings);
 
 
 // DISPLAY SERVING COUNTERS
@@ -17,7 +21,8 @@ const dailyCounters = settingsRepo.getDailySettings().map(createCounter);
 const weeklyCounters = settingsRepo.getWeeklySettings().map(createCounter);
 document.getElementById("daily-counters").append(...dailyCounters);
 document.getElementById("weekly-counters").append(...weeklyCounters);
-loadData();
+loadDailyData();
+loadWeeklyData();
 
 function createCounter(sObj) {
   const counter = document.createElement("custom-counter");
@@ -37,26 +42,16 @@ function createCounter(sObj) {
 }
 
 // LOAD TODAY'S DATA
-function loadData() {
-  let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
-  let weeks = JSON.parse(localStorage.getItem("weeks")) ?? [createNewWeek(createNewDay())]; 
+function loadDailyData() {
+  let today = dataRepo.getToday();
   if (dayHasPassed(today.date)) {
-    if (weekHasPassed(weeks)) {
-      resetWeekCounters(weeks);
-      weeks.unshift(createNewWeek(today));
-    }
-    weeks[0] = saveDayinWeek0(today, weeks[0]);
     resetDayCounters(today); 
     today = createNewDay();
   }
-  const dayData = today.data;
-  const weekData = weeks[0].data;
-  const allData = {...dayData, ...weekData};
   document.querySelectorAll("custom-counter").forEach( (counter) => {
     counter.current = allData[counter.counts];
   })
   localStorage.setItem("today", JSON.stringify(today));
-  localStorage.setItem("weeks", JSON.stringify(weeks));
 }
 
 
@@ -65,22 +60,12 @@ function dayHasPassed(checkDate) {
   return (datesRepo.compareDateArrs(checkDate, currentDate) === 1);
 }
 
-function weekHasPassed(weeks) {
-  const currentDate = datesRepo.justDate();
-  weeks[0].days.forEach(d => {
-    if (datesRepo.compareDateArrs(d.date, currentDate) === 0) {
-      return false;
-    }
-  })
-  return true;
-}
-
 function resetDayCounters(passedDay) {
   document.querySelectorAll("#daily-counters custom-counter").forEach((counter) => (counter.current = 0));
 }
 
-function resetWeekCounters() {
-  document.querySelectorAll("#weekly-counters custom-counter").forEach((counter) => (counter.current = 0));
+function loadWeeklyData() {
+
 }
 
 // UPDATE TODAY'S DATA
@@ -108,16 +93,6 @@ function updateCounts(ev) {
   }
   localStorage.setItem("today", JSON.stringify(today));
   localStorage.setItem("weeks", JSON.stringify(weeks));
-}
-
-function saveDayinWeek0(day, week0) {
-  week0.days.forEach(d => {
-    if (datesRepo.compareDateArrs(d.date, day.date) === 0){
-      d = day;
-      return week0;
-    }
-  })
-  console.log(`Error saving data. day ${day.date} not found in current week ${week0.date}`);
 }
 
 function createNewDay(date) {

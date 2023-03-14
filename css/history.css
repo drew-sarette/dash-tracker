@@ -1,27 +1,90 @@
-expandable-list  {
-    display: inline-block;
-    margin: .5em;
+/* || MOBILE LAYOUT */
+body {
+  display: grid;
+  grid-template-rows: max-content auto max-content;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  gap: 1em;
+  padding: 1.5em;
 }
 
-.week-display {
-    border: var(--border-size) solid var(--main-text-color);
-    border-radius: var(--border-radius);
-    padding: 1em;
-}
-.week-display > div {
-    display: flow-root;
+custom-header {
+  grid-area: header;
 }
 
-.week-display > div > expandable-list {
-    border: var(--border-size) solid var(--main-text-color);
-    border-radius: var(--border-radius);
+main {
+  grid-area: main;
+  justify-self: center;
+  width: 100%;
+  max-width: 45rem;
+  margin: 0 auto;
 }
 
-.icon-small {
-    margin-right: .5ch;
+footer {
+  grid-area: footer;
+  text-align: center;
 }
 
-li[slot="expandable"] {
-    display: flex;
-    align-items: center;
+main > * {
+  margin-bottom: 1rem;
 }
+
+/* || Calendar */
+
+.select-date {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+select {
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--main-bg-color);
+  font-size: 2rem;
+}
+
+select:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+
+.calendar {
+    width: 100%;
+    padding: .5em;
+}
+
+td {
+    height: 5rem;
+    width: 14.2857%;
+    padding: .2em;
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid var(--main-text-color);
+    border-collapse: collapse;
+}
+
+.dot {
+    margin: 0 auto;
+    width: 1.5ch;
+    height: 1.5ch;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+}
+
+.has-dot:hover {
+    cursor: pointer;
+}
+
+#show-details {
+    position: absolute;
+    z-index: 1;
+    top: 20%;
+    width: fit-content;
+    padding: 2em;
+    background-color: var(--main-bg-color)
+}
+

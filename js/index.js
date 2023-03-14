@@ -51,72 +51,66 @@ function loadDailyData() {
     counter.current = days[0].data[counter.counts];
   })
   dataRepo.saveDays(days);
-  
 }
-
 
 function dayHasPassed(checkDate) {
   const currentDate = datesRepo.justDate();
   return (datesRepo.compareDateArrs(checkDate, currentDate) === 1);
 }
 
-function resetDayCounters(passedDay) {
-  document.querySelectorAll("#daily-counters custom-counter").forEach((counter) => (counter.current = 0));
-}
-
 function loadWeeklyData() {
-
+  let lastWeek = dataRepo.getLastWeek();
+  //lastWeek is an array of day objects.
+  //Each day object contains a date and a data property
+  //Each weeklyCounter's counts property matches a property in day.data
+  weeklyCounters.forEach(counter => {
+    counter.current = lastWeek.reduce((accumulator, day) => {
+      return day.data[counter.counts] + accumulator;
+    }, 0)
+  })
 }
 
 // UPDATE TODAY'S DATA
 function updateCounts(ev) {
   // Check if today is present in Weeks, create new week starting today if not.
-  let today = JSON.parse(localStorage.getItem("today")) ?? createNewDay();
-  let weeks = JSON.parse(localStorage.getItem("weeks")) ?? [createNewWeek(today)];
-  if (dayHasPassed(today.date)) {
-    if (weekHasPassed(weeks)) {
-      resetWeekCounters(weeks);
-      weeks.unshift(createNewWeek(today));
-    }
-    weeks[0] = saveDayinWeek0(today, weeks[0]);
-    resetDayCounters(today); 
-    today = createNewDay();
+  const days = dataRepo.getDays() ? dataRepo.getDays() : [createNewDay()];
+  if (dayHasPassed(days[0].date)) {
+    dailyCounters.forEach(counter => counter.current = 0);
+    days.unshift(createNewDay());
+    dataRepo.saveDays(days);
+    loadWeeklyData();
+    alert("The date has been updated. Please enter your changes again.");
+    return;
   }
-  else {
-    if (!ev) { return }
-    if (ev.target.timeframe=== "daily"){
-      today.data[ev.target.counts] = ev.target.current;
+  else if (ev.target.timeframe){
+    console.log(ev.target.timeframe);
+    if (ev.target.timeframe === "daily") {
+      days[0].data[ev.target.counts] = ev.target.current;
     }
-    if (ev.target.timeframe === "weekly"){
-      weeks[0].data[ev.target.counts] = ev.target.current;
+    else if (ev.target.timeframe === "weekly") {
+      // oldVal counts the total number of servings in the last week
+      // need a cleaner way to handle updating the seving data for each day
+      const oldVal = dataRepo.getLastWeek().reduce((accumulator, day) => {
+        return day.data[ev.target.counts] + accumulator;
+      }, 0)
+      const difference = ev.target.current - oldVal;
+      // Avoid lowering the counter when the number of servings recorded today is already 0
+      if (difference === -1 && days[0].data[ev.target.counts] < 1) {
+        ev.target.current++;
+        return;
+      }
+      days[0].data[ev.target.counts] += difference;
     }
+    dataRepo.saveDays(days);
   }
-  localStorage.setItem("today", JSON.stringify(today));
-  localStorage.setItem("weeks", JSON.stringify(weeks));
 }
 
 function createNewDay(date) {
   date ??= datesRepo.justDate();
   const data = {};
-  dailySettings.forEach( (s) => data[s.jsVariable] = 0 );
+  settings.forEach( (s) => data[s.jsVariable] = 0 );
   return {
     date: date,
     data: data
   };
-}
-
-function createNewWeek(startDay) {
-  //Creates a new week object given the first day object
-  const newWeek = {
-    date: startDay.date,
-    days: [],
-    data: {}
-  };
-  weeklySettings.forEach( (s) => newWeek.data[s.jsVariable] = 0 );
-  for (let i = 0; i<7; i++){
-    const nextDate = datesRepo.addDaysToDate(newWeek.date, i)
-    newWeek.days.push(createNewDay(nextDate));
-  };
-  console.log(newWeek);
-  return newWeek;
 }

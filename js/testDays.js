@@ -191,22 +191,6 @@ const days = [
           alcohol: 1
         }
       },
-      {
-        date: [2023, 3, 13],
-        data: {
-          grains: 3,
-          vegetables: 2,
-          fruits: 2,
-          meat: 6,
-          dairy: 2,
-          fatsOils: 2,
-          sodium: 2400,
-          caffeine: 60,
-          sweets: 1,
-          nutsSeedsLegumes: 2,
-          alcohol: 0
-        }
-      },
     //...more days
   ]
   export default days;

@@ -1,4 +1,4 @@
-import { settingsRepo } from "./settings-repo.js";
+import settingsRepo from "./settings-repo.js";
 document.getElementById("save-settings").addEventListener("click", saveSettings); 
 document.getElementById("daily-settings").append(...createInputs(settingsRepo.getDailySettings()));
 document.getElementById("weekly-settings").append(...createInputs(settingsRepo.getWeeklySettings()));

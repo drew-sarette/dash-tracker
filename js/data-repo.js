@@ -1,8 +1,10 @@
 import datesRepo from "./dates-repo.js";
+import testDays from "./testDays.js";
 
 const dataRepo = {
     getDays: function () {
-        const days = JSON.parse(localStorage.getItem("days"));
+        let days = JSON.parse(localStorage.getItem("days"));
+        // days = testDays.reverse();
         return days ? days : null;      
     },
 
@@ -12,6 +14,7 @@ const dataRepo = {
 
     getLastWeek: function () {
         let days = this.getDays() ? this.getDays() : [];
+        // days = testDays.reverse();
         const last7entries = days.slice(0, 7);
         //startDate is the day six days ago
         const startDate = datesRepo.addDaysToDate(datesRepo.justDate(), -5);

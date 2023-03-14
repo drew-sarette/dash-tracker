@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import settingsRepo from "./settings-repo.js";
 import dataRepo from "./data-repo.js";
 import datesRepo from "./dates-repo.js";
+=======
+import datesRepo from "./dates-repo.js";
+import settingsRepo from "./settings-repo.js";
+>>>>>>> main
 
 try {
   localStorage.setItem("test", "");
@@ -50,7 +55,17 @@ function loadDailyData() {
   dailyCounters.forEach( (counter) => {
     counter.current = days[0].data[counter.counts];
   })
+<<<<<<< HEAD
   dataRepo.saveDays(days);
+=======
+  if (weeks[0] === null) {
+    console.trace();
+    alert("Weeks[0] set to null. Check logs");
+    weeks.unshift();
+  }
+  localStorage.setItem("today", JSON.stringify(today));
+  localStorage.setItem("weeks", JSON.stringify(weeks));
+>>>>>>> main
 }
 
 function dayHasPassed(checkDate) {
@@ -103,6 +118,26 @@ function updateCounts(ev) {
     }
     dataRepo.saveDays(days);
   }
+<<<<<<< HEAD
+=======
+  if (weeks[0] === null) {
+    console.trace();
+    alert("Weeks[0] set to null. Check logs");
+    weeks.unshift();
+  }
+  localStorage.setItem("today", JSON.stringify(today));
+  localStorage.setItem("weeks", JSON.stringify(weeks));
+}
+
+function saveDayinWeek0(day, week0) {
+  week0.days.forEach(d => {
+    if (datesRepo.compareDateArrs(d.date, day.date) === 0){
+      d = day;
+      return week0;
+    }
+  })
+  console.log(`Error saving data. day ${day.date} not found in current week ${week0.date}`);
+>>>>>>> main
 }
 
 function createNewDay(date) {
@@ -114,3 +149,21 @@ function createNewDay(date) {
     data: data
   };
 }
+<<<<<<< HEAD
+=======
+
+function createNewWeek(startDay) {
+  //Creates a new week object given the first day object
+  const newWeek = {
+    date: startDay.date,
+    days: [],
+    data: {}
+  };
+  settingsRepo.getWeeklySettings().forEach( (s) => newWeek.data[s.jsVariable] = 0 );
+  for (let i = 0; i<7; i++){
+    const nextDate = datesRepo.addDaysToDate(newWeek.date, i)
+    newWeek.days.push(createNewDay(nextDate));
+  };
+  return newWeek;
+}
+>>>>>>> main

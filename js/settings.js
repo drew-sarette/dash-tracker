@@ -1,7 +1,11 @@
 import settingsRepo from "./settings-repo.js";
+const settings = settingsRepo.getSettings();
+const dailySettings = settings.filter(s => s.timeFrame === "daily");
+const weeklySettings = settings.filter(s => s.timeFrame === "weekly");
+
 document.getElementById("save-settings").addEventListener("click", saveSettings); 
-document.getElementById("daily-settings").append(...createInputs(settingsRepo.getDailySettings()));
-document.getElementById("weekly-settings").append(...createInputs(settingsRepo.getWeeklySettings()));
+document.getElementById("daily-settings").append(...createInputs(dailySettings));
+document.getElementById("weekly-settings").append(...createInputs(weeklySettings));
 
 function createInputs(settings) {
   const inputs = [];

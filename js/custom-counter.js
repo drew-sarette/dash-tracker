@@ -60,7 +60,7 @@ template.innerHTML = `
     <div class="progress">
       <div class="percent-complete color"></div>
     </div>
-    <button class="decrement color"><img src="img/decrement.png"></button>
+    <button class="decrement color"><img src="img/decrement.svg"></button>
     <div class="info">
       <div>
         <b class="current-val"></b>/<b class="max-val"></b>
@@ -68,7 +68,7 @@ template.innerHTML = `
       <slot name="icon"></slot>
       <b class="name"></b>
     </div> 
-    <button class="increment color"><img src="img/increment.png"></button>
+    <button class="increment color"><img src="img/increment.svg"></button>
   `;
 
 class CustomCounter extends HTMLElement {

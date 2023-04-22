@@ -31,7 +31,7 @@ function updateCalendar() {
     Number(yearInput.value),
     Number(monthInput.value),
   ];
-  const days = loadData(selectedYear, selectedMonth);
+  const days = loadData(selectedYear, selectedMonth) ? loadData(selectedYear, selectedMonth)  : [];
   const tds = document.querySelectorAll("td");
   tds.forEach((td) => {
     td.innerHTML = null;
@@ -73,8 +73,15 @@ function showDetail(dayData, ev) {
 
 function loadData(year, month) {
   const allData = dataRepo.getDays();
-  const selectedMonth = allData.filter(
+  const selectedMonth = allData?.filter(
     (d) => d.date[0] === year && d.date[1] === month
   );
   return selectedMonth;
 }
+
+document.getElementById("clear-history").addEventListener("click", () => {
+  if(confirm("Would you like to clear all data?")) {
+    localStorage.removeItem("days");
+    location.reload();
+  }
+})
